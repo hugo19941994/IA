@@ -12,15 +12,18 @@ import glob
 import errno
 
 from nltk import *
-#nltk.download("punkt") #Activar para descargar paquetes de NLTK
+# nltk.download("punkt") #Activar para descargar paquetes de NLTK
+# Cargar tokenizador español
+tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
+
 
 def creartxt(name):
-    archi=open(name + '.txt','w')
+    archi = open(name + '.txt', 'w')
     archi.close()
 
+
 def escribirtxt(datos, educacion, laboral, emails):
-    
-    archi=open(name + '.txt','w')
+    archi = open(name + '.txt', 'w')
     
     archi.write("Datos Personales:\n")
     for palabra in datos:
@@ -38,37 +41,36 @@ def escribirtxt(datos, educacion, laboral, emails):
     for palabra in emails:
         archi.write(palabra + "\n")
 
-#Directorio de los curriculums
-path = 'cv/*.pdf'   
+# Directorio de los curriculums
+path = 'cv/*.*'
 
-#Lectura de de los curriculums
-files = glob.glob(path)
+# Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
+files = [f for f in glob.glob(path) if ".pdf" or ".html" or ".doc" or ".docx" or ".odt" in f]
 
-for name in files: # name = curriculum name
+for name in files:  # name = Nombre de curriculum
     try:
-        with open(name) as f: # No need to specify 'r': this is the default.
+        with open(name) as f:  # No need to specify 'r': this is the default.
             # Usar tika para pasar archivo a texto plano
-            raw = subprocess.getoutput(["java", "-jar",  "tika-app-1.11.jar",  "-t", name])
-            # Cargar tokenizador español
-            tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
+            raw = subprocess.check_output(["java", "-jar",  "tika-app-1.11.jar",  "-t", name], universal_newlines=True)
 
-            #Crear fichero a escribir
+            # Crear fichero a escribir
             creartxt(name)
 
             par, emails, datos, educacion, laboral = [], [], [], [], []
 
-            # Cortar texto en parrafos
+            # Cortar texto en párrafos
             paragraphs = [p for p in raw.split('\n') if p]
             for paragraph in paragraphs:
                 tokens = tokenizer.tokenize(paragraph)  # Tokenizar cada parrafo
                 for p in tokens:
                     par.append(p)  # Poner tokens en el mismo array
 
-            # Posibles cabeceras e emails
+            # Posibles cabeceras y e-mails
             regexEmail = re.compile(r'[\w.-]+@[\w.-]+')
             regexDatos = re.compile("Datos personales|Nombre[s]|Apellido[s]", re.IGNORECASE)
-            regexFormacion = re.compile("Preparaci[o|ó]n|Acad[e|é]mic[a|o]|Formaci[o|ó]n|Titulo[s]|Certificaci[ó|o]n[es]|"
-                                        "Estudios|Cursos|Seminario[s]|Extra[-]academic[a|o]", re.IGNORECASE)
+            regexFormacion = re.compile("Preparaci[o|ó]n|Acad[e|é]mic[a|o]|Formaci[o|ó]n|Titulo[s]|"
+                                        "Certificaci[ó|o]n[es]|Estudios|Cursos|Seminario[s]|Extra[-]academic[a|o]",
+                                        re.IGNORECASE)
             regexExperiencia = re.compile("Experiencia|Profesional|Laboral|Cargos|Empresa", re.IGNORECASE)
 
             last = 0  # 0 = Datos Personales, 1 = Formación, 2 = Exp Laboral
@@ -95,9 +97,9 @@ for name in files: # name = curriculum name
                 elif last == 2:
                     laboral.append(t)
 
-            #Escritura a fichero txt
+            # Escritura a fichero txt
             escribirtxt(datos, educacion, laboral, emails)
   
     except IOError as exc:
-        if exc.errno != errno.EISDIR: # No fallar si otro directorio es encontrado, simplemente ignorarlo
-            raise # Propagacion de errores
+        if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
+            raise  # Propagacion de errores
