@@ -4,16 +4,27 @@
 # * Hugo Ferrando Seage
 # * Santiago Gualda Torrijos
 # * Cristian López-Ramos Rivera
-# TODO: Name Entity Recognition, Web service?, improve segmentation, HMM?, JSON or YAML export?
+# TODO: Name Entity Recognition, Web service?, improve segmentation, HMM?, JSON or YAML export?, verify download
 
 import nltk
 import sys
 import glob
 import errno
-
+import urllib.request
+import shutil
+import os.path
 from nltk import *
-# nltk.download("punkt") #Activar para descargar paquetes de NLTK
-# Cargar tokenizador español
+
+# Comprobar si Tika 1.11 existe en la carpeta
+if (not os.path.isfile("tika-app-1.11.jar")):
+    # Se descarga si no está
+    print("Downloading Tika 1.11")
+    with urllib.request.urlopen("http://www.apache.org/dyn/closer.cgi/tika/tika-app-1.11.jar") as response, open("tika-app-1.11.jar", 'wb') as out_file:
+        shutil.copyfileobj(response, out_file)
+
+# Descargar tokenizador de NLTK
+nltk.download("punkt")
+# Cargar tokenizador de español
 tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
 
 
@@ -24,11 +35,11 @@ def creartxt(name):
 
 def escribirtxt(datos, educacion, laboral, emails):
     archi = open(name + '.txt', 'w')
-    
+
     archi.write("Datos Personales:\n")
     for palabra in datos:
         archi.write(palabra + "\n")
-        
+
     archi.write("\nEducacion:\n")
     for palabra in educacion:
         archi.write(palabra + "\n")
@@ -36,7 +47,7 @@ def escribirtxt(datos, educacion, laboral, emails):
     archi.write("\nExperiencia Laboral:\n")
     for palabra in laboral:
         archi.write(palabra + "\n")
-   
+
     archi.write("\nEmails Encontrados:\n")
     for palabra in emails:
         archi.write(palabra + "\n")
@@ -99,7 +110,7 @@ for name in files:  # name = Nombre de curriculum
 
             # Escritura a fichero txt
             escribirtxt(datos, educacion, laboral, emails)
-  
+
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
             raise  # Propagacion de errores
