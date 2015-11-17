@@ -4,6 +4,9 @@ import os.path
 import hashlib
 import time
 import threading
+import sys
+
+run = True
 
 
 def mientrasDescarga():
@@ -26,7 +29,6 @@ def descargaTika():
         print("Descargando Tika 1.11")
 
         # Imprimimos mensaje por consola para que no parezca que el programa esta parado
-        run = True
         t = threading.Thread(target=mientrasDescarga, daemon=True)
         t.start()
 
