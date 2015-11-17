@@ -63,7 +63,7 @@ def creartxt(name):
     archi.close()
 
 
-def escribirtxt(datos, educacion, laboral, emails):
+def escribirtxt(datos, educacion, laboral, emails, idiomas):
     archi = open(name + '.txt', 'w')
 
     archi.write("Datos Personales:\n")
@@ -76,6 +76,10 @@ def escribirtxt(datos, educacion, laboral, emails):
 
     archi.write("\nExperiencia Laboral:\n")
     for palabra in laboral:
+        archi.write(palabra + "\n")
+
+    archi.write("\nIdiomas:\n")
+    for palabra in idiomas:
         archi.write(palabra + "\n")
 
     archi.write("\nEmails Encontrados:\n")
@@ -97,7 +101,7 @@ for name in files:  # name = Nombre de curriculum
             # Crear fichero a escribir
             creartxt(name)
 
-            par, emails, datos, educacion, laboral = [], [], [], [], []
+            par, emails, datos, educacion, laboral, idiomas = [], [], [], [], [], []
 
             # Cortar texto en párrafos
             paragraphs = [p for p in raw.split('\n') if p]
@@ -113,8 +117,9 @@ for name in files:  # name = Nombre de curriculum
                                         "Certificaci[ó|o]n[es]|Estudios|Cursos|Seminario[s]|Extra[-]academic[a|o]",
                                         re.IGNORECASE)
             regexExperiencia = re.compile("Experiencia|Profesional|Laboral|Cargos|Empresa", re.IGNORECASE)
+            regexIdiomas = re.compile("Idiom[a|s]|Inglés|Frances|Italiano|Alemán|Chino|Ruso|Leído|Escrito|Oral|Nivel", re.IGNORECASE)
 
-            last = 0  # 0 = Datos Personales, 1 = Formación, 2 = Exp Laboral
+            last = 0  # 0 = Datos Personales, 1 = Formación, 2 = Exp Laboral, 3 = Idiomas
             for t in par:
                 # Buscar e-mails
                 match = regexEmail.findall(t)
@@ -130,6 +135,9 @@ for name in files:  # name = Nombre de curriculum
                 if regexExperiencia.match(t):
                     print("Experiencia laboral encontrada!")
                     last = 2
+                if regexIdiomas.match(t):
+                    print("Idiomas encontrados!")
+                    last = 3
                 # Poner contenido de un segmento en su propio array
                 if last == 0:
                     datos.append(t)
@@ -137,9 +145,11 @@ for name in files:  # name = Nombre de curriculum
                     educacion.append(t)
                 elif last == 2:
                     laboral.append(t)
+                elif last == 3:
+                    idiomas.append(t)
 
             # Escritura a fichero txt
-            escribirtxt(datos, educacion, laboral, emails)
+            escribirtxt(datos, educacion, laboral, emails, idiomas)
 
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
