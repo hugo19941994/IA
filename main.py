@@ -40,15 +40,27 @@ def escribirtxt(lists):
         for palabra in lista:
             archi.write(palabra + "\n")
 
+print("Iniciando el segmentador de curriculums...\n")
+
 # Descargar Tika
+print("Comprobando TIKA...")
 descargaTika()
 # Descargar tokenizador de NLTK
+print("Comprobando el tokenizador de NLTK...")
 nltk.download("punkt")
 # Cargar tokenizador de español
+print("Cargando el tokenizador...")
 tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
 
 # Determinar si se lee desde el directorio de curriculums o si se pasa el curriculum por parámetros
-path = 'cv/*.*' if sys.argv[1] == None else sys.argv[1]
+if len(sys.argv) > 1:
+    path = sys.argv[1]
+    print("Se procesara el siguiente curriculum: " + path + "\n")
+else:
+    path = 'cv/*.*'
+    print("Se procesaran los curriculums de la carpeta " + path + "\n");
+
+print("Procesando...")
     
 # Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
 files = [f for f in glob.glob(path) if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
@@ -61,6 +73,7 @@ for name in files:
 
             # Crear fichero a escribir
             creartxt(name)
+            print("Procesando " + name + "\n")
 
             # Crear e inicializar listas
             par, emails, datos, educacion, laboral, idiomas, libros, extras = ([] for i in range(8))
@@ -68,6 +81,7 @@ for name in files:
 
             # Cortar texto en párrafos
             paragraphs = [p for p in raw.split('\n') if p]
+            print("Tokenizando el contenido...")
             for paragraph in paragraphs:
                 tokens = tokenizer.tokenize(paragraph)  # Tokenizar cada parrafo
                 for p in tokens:
@@ -78,7 +92,7 @@ for name in files:
                 for i,r in enumerate(regxRules):  # Recorre todas las regex
                     if r.match(t):  # Si coincide
                         last = i
-                        print("Cabecera encontrada:\n" + t)
+                        #print("Cabecera encontrada:\n" + t)
                         break
                 # Poner contenido de un segmento en su propio array
                 listas[last].append(t)
@@ -86,10 +100,11 @@ for name in files:
             for t in datos:  # Buscar e-mails dentro de Datos personales
                 match = regexEmail.findall(t)
                 for email in match:
-                    print("Email encontrado!")
+                    #print("Email encontrado!")
                     emails.append(email)
 
             # Escritura a fichero txt
+            print("\nEscribiendo salida de fichero de " + name + ".txt\n")
             escribirtxt(listas)
 
     except IOError as exc:
