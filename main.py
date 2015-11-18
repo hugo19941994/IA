@@ -47,9 +47,9 @@ nltk.download("punkt")
 # Cargar tokenizador de español
 tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
 
-# Directorio de los curriculums
-path = 'cv/*.*'
-
+# Determinar si se lee desde el directorio de curriculums o si se pasa el curriculum por parámetros
+path = 'cv/*.*' if sys.argv[1] == None else sys.argv[1]
+    
 # Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
 files = [f for f in glob.glob(path) if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
 
