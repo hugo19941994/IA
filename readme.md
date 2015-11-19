@@ -8,5 +8,9 @@ Proyecto integrador de 3º de la [Universidad Europea de Madrid(UEM)](http://mad
 * [Apache Tika 1.11](https://tika.apache.org/download.html) (Se descargará durante la ejecución)
 
 ## Uso
-Crear carpeta "cv" en la raíz del programa. El programa leerá los curriculums de ahí.
+### Modo batch
+Crear carpeta "cv" en la raíz del programa. El programa leerá los currículums de ahí.
+
+### Modo individual
+Pasar el currículum como primer argumento del programa.
 
