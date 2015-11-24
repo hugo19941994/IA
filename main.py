@@ -9,7 +9,8 @@
 import nltk
 import glob
 import errno
-from downloadTika import *
+import sys
+from downloadTika import comprobarApacheTika
 from regexRules import *
 from nltk import *
 
@@ -43,7 +44,7 @@ print("Iniciando el segmentador de curriculums...\n")
 
 # Descargar Tika
 print("Comprobando TIKA...")
-descargaTika()
+comprobarApacheTika('http://ftp.cixug.es/apache/tika/tika-app-1.11.jar')
 # Descargar tokenizador de NLTK
 print("Comprobando el tokenizador de NLTK...")
 nltk.download("punkt")
