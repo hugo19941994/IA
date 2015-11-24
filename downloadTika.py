@@ -1,39 +1,57 @@
-import urllib.request
-import shutil
-import os.path
+import urllib.request as urllib2
 import hashlib
 import time
 import threading
-import sys
 
 run = True
+status = ""
 
 
 def mientrasDescarga():
-    spaces = 0
     while run:
-        sys.stdout.write(" " * spaces + ".\r")
-        if spaces >= 10:
-            sys.stdout.write(" " * 11 + "\r")
-            spaces = 0
-        else:
-            spaces += 1
-        time.sleep(1)
+        print(status, end="")
+        time.sleep(2)
     return
 
-def descargaTika():
-    # Comprobar si Tika 1.11 existe en la carpeta
-    if (not os.path.isfile("tika-app-1.11.jar")):
-        # Se descarga si no está
-        print("Descargando Tika 1.11")
 
-        # Imprimimos mensaje por consola para que no parezca que el programa esta parado
-        t = threading.Thread(target = mientrasDescarga, daemon=True)
-        t.start()
+def download(url):
+    urlresponse = urllib2.urlopen(url)
 
-        with urllib.request.urlopen("http://ftp.cixug.es/apache/tika/tika-app-1.11.jar") as response, open("tika-app-1.11.jar", 'wb') as out_file:
-            shutil.copyfileobj(response, out_file)
-        run = False
+    # Obtención del nombre del archivo (última parte de la url)
+    filename = url.split('/')[-1]
+    if not filename:
+        filename = 'downloaded file'
+
+    # Escritura de archivo en modo wb (write binary mode)
+    with open(filename, 'wb') as f:
+        # Obtención de la longitud de archivo
+        meta = urlresponse.info()
+        meta_func = meta.getheaders if hasattr(meta, 'getheaders') else meta.get_all
+        meta_length = meta_func("Content-Length")
+        file_size = None
+        if meta_length:
+            file_size = int(meta_length[0])
+
+        print("Descargando: {0} Bytes: {1}".format(url, file_size))
+
+        file_size_dl = 0
+        block_sz = 8192
+        statusthread = threading.Thread(target=mientrasDescarga, daemon=True)
+        statusthread.start()
+        while True:
+            buffer = urlresponse.read(block_sz)
+            if not buffer:
+                break
+
+            file_size_dl += len(buffer)
+            f.write(buffer)
+
+            status = "{0:16}".format(file_size_dl)
+            if file_size:
+                status += "   [{0:6.2f}%]".format(file_size_dl * 100 / file_size)
+            status += chr(13)
+		run = False
+        print()
 
     # Comprobar Tika con su SHA1
     with open("tika-app-1.11.jar", 'rb') as f:
@@ -41,4 +59,10 @@ def descargaTika():
             print("Tika tiene SHA1 correcto")
         else:
             print("Tika no tiene SHA1 correcto\nBorra el archivo de Tika y prueba otra vez")
-            exit()
+
+    return filename
+
+
+url = "http://ftp.cixug.es/apache/tika/tika-app-1.11.jar"
+name = download(url)
+print(name)
