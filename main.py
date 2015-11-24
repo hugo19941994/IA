@@ -10,6 +10,7 @@ import nltk
 import glob
 import errno
 import sys
+import pickle
 from downloadTika import comprobarApacheTika
 from regexRules import *
 from nltk import *
@@ -47,10 +48,13 @@ print("Comprobando TIKA...")
 comprobarApacheTika('http://ftp.cixug.es/apache/tika/tika-app-1.11.jar')
 # Descargar tokenizador de NLTK
 print("Comprobando el tokenizador de NLTK...")
+# nltk.download()
 nltk.download("punkt")
 # Cargar tokenizador de español
 print("Cargando el tokenizador...")
 tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
+# Spanish conll2002 POS tagger
+tagger = pickle.load(open("conll2002_aubt.pickle", 'rb'))
 
 # Determinar si se lee desde el directorio de curriculums o si se pasa el curriculum por parámetros
 if len(sys.argv) > 1:
@@ -107,6 +111,14 @@ for name in files:
             print("\nEscribiendo salida de fichero de " + name + ".txt\n")
             escribirtxt(listas)
 
+            # TODO - POS Tagger
+            # Separa la linea por palabras (whitespace) y agrega tag (tipo de palabra)
+            a = [words for segments in listas[0] for words in segments.split()]
+            print(tagger.tag(a))
+
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
             raise  # Propagacion de errores
+
+
+
