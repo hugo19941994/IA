@@ -13,4 +13,3 @@ Crear carpeta "cv" en la raíz del programa. El programa leerá los currículums
 
 ### Modo individual
 Pasar el currículum como primer argumento del programa.
-

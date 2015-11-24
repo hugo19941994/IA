@@ -1,30 +1,30 @@
-from tkinter import *
 from tkinter.filedialog import *
 import tkinter.messagebox
 
-top=tkinter.Tk()
+top = tkinter.Tk()
 top.geometry("250x200")
 top.title("Clasificador de CV")
-logo=PhotoImage(file="logo_everis.png")
+logo = PhotoImage(file = "logo_everis.png")
 
 def load_file():
         fname_1 = askopenfilename(filetypes=(("PDF", "*.pdf"),
-                                           ("HTML files", "*.html;*.htm"),
-                                           ("Text files", "*.docx;*.txt;*.odt"),
-                                           ("All files", "*.*") ))
+                                             ("HTML files", "*.html"),
+                                             ("Text files", "*.docx;*.txt;*.odt"),
+                                             ("All files", "*.*") ))
         if fname_1:
             try:
                 print(fname_1)
-            except:                     # <- naked except is a bad idea
-                showerror("Open Source File", "Failed to read file\n'%s'" % fname)
+            except:
+                tkinter.showerror("Open Source File", "Failed to read file\n'%s'" % fname_1)
             return
+
 def load_folder():
         fname_2 = askdirectory()
         if fname_2:
             try:
                 print(fname_2)
-            except:                     # <- naked except is a bad idea
-                showerror("Open Source File", "Failed to read file\n'%s'" % fname)
+            except:
+                tkinter.showerror("Open Source File", "Failed to read file\n'%s'" % fname_2)
             return
 
 label_3=Label(top, image=logo)
@@ -45,6 +45,4 @@ button_1.grid(row=3, column=0)
 button_2.grid(row=3, column=1)
 
 
-
 top.mainloop()
-

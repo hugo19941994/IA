@@ -21,7 +21,6 @@ def mientrasDescarga():
         time.sleep(1)
     return
 
-
 def descargaTika():
     # Comprobar si Tika 1.11 existe en la carpeta
     if (not os.path.isfile("tika-app-1.11.jar")):
@@ -29,7 +28,7 @@ def descargaTika():
         print("Descargando Tika 1.11")
 
         # Imprimimos mensaje por consola para que no parezca que el programa esta parado
-        t = threading.Thread(target=mientrasDescarga, daemon=True)
+        t = threading.Thread(target = mientrasDescarga, daemon=True)
         t.start()
 
         with urllib.request.urlopen("http://ftp.cixug.es/apache/tika/tika-app-1.11.jar") as response, open("tika-app-1.11.jar", 'wb') as out_file:

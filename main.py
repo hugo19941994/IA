@@ -7,7 +7,6 @@
 # TODO: Name Entity Recognition, Web service?, improve segmentation, HMM?, JSON or YAML export?, choose mirror dynamically?, poner porcentaje descargar en vez de puntos
 
 import nltk
-import sys
 import glob
 import errno
 from downloadTika import *
@@ -58,10 +57,10 @@ if len(sys.argv) > 1:
     print("Se procesara el siguiente curriculum: " + path + "\n")
 else:
     path = 'cv/*.*'
-    print("Se procesaran los curriculums de la carpeta " + path + "\n");
+    print("Se procesaran los curriculums de la carpeta " + path + "\n")
 
 print("Procesando...")
-    
+
 # Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
 files = [f for f in glob.glob(path) if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
 
