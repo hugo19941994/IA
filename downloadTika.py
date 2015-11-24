@@ -70,3 +70,4 @@ def comprobarApacheTika(url):
                 print("SHA1 correcto")
             else:
                 print("SHA1 incorrecto\nBorra el archivo y prueba otra vez")
+                exit()
