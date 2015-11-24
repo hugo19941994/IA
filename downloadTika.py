@@ -50,7 +50,7 @@ def download(url):
             if file_size:
                 status += "   [{0:6.2f}%]".format(file_size_dl * 100 / file_size)
             status += chr(13)
-		run = False
+        run = False
         print()
 
     # Comprobar Tika con su SHA1
