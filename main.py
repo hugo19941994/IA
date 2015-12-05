@@ -56,7 +56,10 @@ print("Cargando el tokenizador...")
 tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
 # Spanish conll2002 POS tagger
 tagger = pickle.load(open("conll2002_aubt.pickle", 'rb'))
+# Chunker para español entrenado con corpus Conll2002 usando Naive Bayes
 chunker = nltk.data.load("chunkers/conll2002_NaiveBayes.pickle")
+# Stemmer para español que viene con NLTK
+stemmer = nltk.SnowballStemmer("spanish")
 
 # Determinar si se lee desde el directorio de curriculums o si se pasa el curriculum por parámetros
 if len(sys.argv) > 1:
@@ -85,8 +88,11 @@ for name in files:
             par, emails, datos, educacion, laboral, idiomas, libros, extras = ([] for i in range(8))
             listas = [datos, educacion, laboral, idiomas, libros, extras, emails]
 
+            # User stemmer de español
+            raw2 = stemmer.stem(raw)
+
             # Cortar texto en párrafos
-            paragraphs = [p for p in raw.split('\n') if p]
+            paragraphs = [p for p in raw2.split('\n') if p]
             print("Tokenizando el contenido...")
             for paragraph in paragraphs:
                 tokens = tokenizer.tokenize(paragraph)  # Tokenizar cada parrafo
