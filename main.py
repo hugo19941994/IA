@@ -7,6 +7,7 @@
 # TODO: Name Entity Recognition, Web service?, improve segmentation, HMM?, JSON or YAML export?, choose mirror dynamically?, poner porcentaje descargar en vez de puntos
 
 import nltk
+import nltk_trainer
 import glob
 import errno
 import sys
@@ -55,6 +56,7 @@ print("Cargando el tokenizador...")
 tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
 # Spanish conll2002 POS tagger
 tagger = pickle.load(open("conll2002_aubt.pickle", 'rb'))
+chunker = nltk.data.load("chunkers/conll2002_NaiveBayes.pickle")
 
 # Determinar si se lee desde el directorio de curriculums o si se pasa el curriculum por parámetros
 if len(sys.argv) > 1:
@@ -111,10 +113,14 @@ for name in files:
             print("\nEscribiendo salida de fichero de " + name + ".txt\n")
             escribirtxt(listas)
 
-            # TODO - POS Tagger
             # Separa la linea por palabras (whitespace) y agrega tag (tipo de palabra)
             a = [words for segments in listas[0] for words in segments.split()]
+
+            # TODO - Seguir con el name entity recognition
+            print("\nTAGGER:\n")
             print(tagger.tag(a))
+            print("\nCHUNKER:\n")
+            print(chunker.parse(tagger.tag(a)))
 
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
