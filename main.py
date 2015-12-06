@@ -12,9 +12,15 @@ import glob
 import errno
 import sys
 import pickle
+import json
 from downloadTika import comprobarApacheTika
 from regexRules import *
 from nltk import *
+
+
+def tree2dict(tree):
+    return {tree.label(): [tree2dict(t)  if isinstance(t, Tree) else t
+                        for t in tree]}
 
 
 def creartxt(name):
@@ -123,10 +129,15 @@ for name in files:
             a = [words for segments in listas[0] for words in segments.split()]
 
             # TODO - Seguir con el name entity recognition
-            print("\nTAGGER:\n")
-            print(tagger.tag(a))
-            print("\nCHUNKER:\n")
-            print(chunker.parse(tagger.tag(a)))
+            # print("\nTAGGER:\n")
+            # print(tagger.tag(a))
+            # print("\nCHUNKER:\n")
+            # print(chunker.parse(tagger.tag(a)))
+            tree = chunker.parse(tagger.tag(a))
+            d = tree2dict(tree)
+            print(json.dumps(d, sort_keys=True, indent=4))
+            # print(json.dumps(chunker.parse(tagger.tag(a)), sort_keys=True, indent=4, separators=(',', ': ')))
+
 
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
