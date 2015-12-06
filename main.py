@@ -4,7 +4,7 @@
 # * Hugo Ferrando Seage
 # * Santiago Gualda Torrijos
 # * Cristian López-Ramos Rivera
-# TODO: Name Entity Recognition, Web service?, improve segmentation, HMM?, JSON or YAML export?, choose mirror dynamically?, poner porcentaje descargar en vez de puntos
+# TODO: IMPROVE SEGMENTATION!!!, choose mirror dynamically?
 
 import nltk
 import nltk_trainer
@@ -87,7 +87,7 @@ for name in files:
             raw = subprocess.check_output(["java", "-jar",  "tika-app-1.11.jar",  "-t", name], universal_newlines=True)
 
             # Crear fichero a escribir
-            creartxt(name)
+            #creartxt(name)
             print("Procesando " + name + "\n")
 
             # Crear e inicializar listas
@@ -107,7 +107,7 @@ for name in files:
 
             last = 0  # 0 = Datos Personales, 1 = Formación, 2 = Exp Laboral, 3 = Idiomas, 4 = Emails
             for t in par:  # Buscar cabeceras
-                for i,r in enumerate(regxRules):  # Recorre todas las regex
+                for i, r in enumerate(regxRules):  # Recorre todas las regex
                     if r.match(t):  # Si coincide
                         last = i
                         #print("Cabecera encontrada:\n" + t)
@@ -123,25 +123,50 @@ for name in files:
 
             # Escritura a fichero txt
             print("\nEscribiendo salida de fichero de " + name + ".txt\n")
-            escribirtxt(listas)
+            # escribirtxt(listas)
 
             # Separa la linea por palabras (whitespace) y agrega tag (tipo de palabra)
-            a = [words for segments in listas[0] for words in segments.split()]
+            # Recorre todas las listas
+            cdp,cf,cel,ci,cl, ce, cem = ({} for i in range(7))
+            listaChunker = [cdp, cf, cel, ci, cl, ce, cem]
 
-            # TODO - Seguir con el name entity recognition
-            # print("\nTAGGER:\n")
-            # print(tagger.tag(a))
-            # print("\nCHUNKER:\n")
-            # print(chunker.parse(tagger.tag(a)))
-            tree = chunker.parse(tagger.tag(a))
-            d = tree2dict(tree)
-            print(json.dumps(d, sort_keys=True, indent=4))
-            # print(json.dumps(chunker.parse(tagger.tag(a)), sort_keys=True, indent=4, separators=(',', ': ')))
+            for idx, (lista, lchunk) in enumerate(zip(listas, listaChunker)):
+                if not len(lista) == 0:  # Excepto si estan vacias
+                    a = [words for segments in lista for words in segments.split()]  # Separa cada palabra
+
+                    # POS Tagging y Chunker entrenados con Conll2002 espanol y Naive Bayes
+                    tree = chunker.parse(tagger.tag(a))
+                    d = tree2dict(tree)  # Convertir a diccionario para pasarlo facilmente a JSON
+                    if not os.path.exists(name + "FOLDER"):  # Crear una carpeta si no existe apra guardar los JSON
+                        os.makedirs(name + "FOLDER")
+                    #with open(name + "FOLDER/" + str(idx)+'.json', 'w') as outfile:
+                    #lchunk = json.dumps(d['S'], sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
+                    #lchunk['S']= json.dumps(d, sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
+                    lchunk['S']= d['S'] # Guardamos lo que hay dentro de S
+                    #print(lchunk)
+
+            print(cdp)
+            finalJSON = {'Datos Personales': listas[0],
+                         'Formacion': listas[1],
+                         'Experiencia Laboral': listas[2],
+                         'Idiomas': listas[3],
+                         'Libros': listas[4],
+                         'Extras': listas[5],
+                         'Emails': listas[6],
+                         'Chunker - Datos Personales': cdp,
+                         'Chunker - Formacion': cf,
+                         'Chunker - Experiencia Laboral': cel,
+                         'Chunker - Idiomas': ci,
+                         'Chunker - Libros': cl,
+                         'Chunker - Extras': ce,
+                         'Chunker - Emails': cem}
+            json.dump(finalJSON, open(name + "FOLDER/" + "final.json", 'w'), sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
+
+                    #print(json.dumps(d, sort_keys=True, indent=4))
+                    # print(json.dumps(chunker.parse(tagger.tag(a)), sort_keys=True, indent=4, separators=(',', ': ')))
 
 
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
             raise  # Propagacion de errores
-
-
 
