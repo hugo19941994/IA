@@ -137,15 +137,15 @@ for name in files:
                     # POS Tagging y Chunker entrenados con Conll2002 espanol y Naive Bayes
                     tree = chunker.parse(tagger.tag(a))
                     d = tree2dict(tree)  # Convertir a diccionario para pasarlo facilmente a JSON
-                    if not os.path.exists(name + "FOLDER"):  # Crear una carpeta si no existe apra guardar los JSON
-                        os.makedirs(name + "FOLDER")
+                    # if not os.path.exists(name + "FOLDER"):  # Crear una carpeta si no existe apra guardar los JSON
+                        # os.makedirs(name + "FOLDER")
                     #with open(name + "FOLDER/" + str(idx)+'.json', 'w') as outfile:
                     #lchunk = json.dumps(d['S'], sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
                     #lchunk['S']= json.dumps(d, sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
                     lchunk['S']= d['S'] # Guardamos lo que hay dentro de S
                     #print(lchunk)
 
-            print(cdp)
+            # print(cdp)
             finalJSON = {'Datos Personales': listas[0],
                          'Formacion': listas[1],
                          'Experiencia Laboral': listas[2],
@@ -160,7 +160,7 @@ for name in files:
                          'Chunker - Libros': cl,
                          'Chunker - Extras': ce,
                          'Chunker - Emails': cem}
-            json.dump(finalJSON, open(name + "FOLDER/" + "final.json", 'w'), sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
+            json.dump(finalJSON, open(name + "final.json", 'w'), sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
 
                     #print(json.dumps(d, sort_keys=True, indent=4))
                     # print(json.dumps(chunker.parse(tagger.tag(a)), sort_keys=True, indent=4, separators=(',', ': ')))
