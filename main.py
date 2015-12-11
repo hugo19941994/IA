@@ -59,11 +59,13 @@ print("Comprobando el tokenizador de NLTK...")
 nltk.download("punkt")
 # Cargar tokenizador de español
 print("Cargando el tokenizador...")
-tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
+#tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
+tokenizer = pickle.load(open("nltk/spanish.pickle", 'rb'))
 # Spanish conll2002 POS tagger
-tagger = pickle.load(open("conll2002_aubt.pickle", 'rb'))
+tagger = pickle.load(open("nltk/conll2002_aubt.pickle", 'rb'))
 # Chunker para español entrenado con corpus Conll2002 usando Naive Bayes
-chunker = nltk.data.load("chunkers/conll2002_NaiveBayes.pickle")
+#chunker = nltk.data.load("chunkers/conll2002_NaiveBayes.pickle")
+chunker = pickle.load(open("nltk/conll2002_NaiveBayes.pickle", 'rb'))
 # Stemmer para español que viene con NLTK
 stemmer = nltk.SnowballStemmer("spanish")
 
@@ -123,7 +125,6 @@ for name in files:
 
             # Escritura a fichero txt
             print("\nEscribiendo salida de fichero de " + name + ".txt\n")
-            # escribirtxt(listas)
 
             # Separa la linea por palabras (whitespace) y agrega tag (tipo de palabra)
             # Recorre todas las listas
@@ -136,35 +137,26 @@ for name in files:
 
                     # POS Tagging y Chunker entrenados con Conll2002 espanol y Naive Bayes
                     tree = chunker.parse(tagger.tag(a))
-                    d = tree2dict(tree)  # Convertir a diccionario para pasarlo facilmente a JSON
-                    # if not os.path.exists(name + "FOLDER"):  # Crear una carpeta si no existe apra guardar los JSON
-                        # os.makedirs(name + "FOLDER")
-                    #with open(name + "FOLDER/" + str(idx)+'.json', 'w') as outfile:
-                    #lchunk = json.dumps(d['S'], sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
-                    #lchunk['S']= json.dumps(d, sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
-                    lchunk['S']= d['S'] # Guardamos lo que hay dentro de S
-                    #print(lchunk)
+                    personas, lugares, organizaciones = ([] for i in range(3))
+                    for subtree in tree.subtrees(filter = lambda t: t.label() == 'PER'):
+                        personas.append(" ".join([a for (a, b) in subtree.leaves()]))
+                    for subtree in tree.subtrees(filter = lambda t: t.label() == 'ORG'):
+                        organizaciones.append(" ".join([a for (a, b) in subtree.leaves()]))
+                    for subtree in tree.subtrees(filter = lambda t: t.label() == 'LOC'):
+                        lugares.append(" ".join([a for (a, b) in subtree.leaves()]))
+                    lchunk['S'] = {"Personas": personas,
+                              "Organizaciones": organizaciones,
+                              "Lugares": lugares}
 
-            # print(cdp)
-            finalJSON = {'Datos Personales': listas[0],
-                         'Formacion': listas[1],
-                         'Experiencia Laboral': listas[2],
-                         'Idiomas': listas[3],
-                         'Libros': listas[4],
-                         'Extras': listas[5],
-                         'Emails': listas[6],
-                         'Chunker - Datos Personales': cdp,
-                         'Chunker - Formacion': cf,
-                         'Chunker - Experiencia Laboral': cel,
-                         'Chunker - Idiomas': ci,
-                         'Chunker - Libros': cl,
-                         'Chunker - Extras': ce,
-                         'Chunker - Emails': cem}
-            json.dump(finalJSON, open(name + "final.json", 'w'), sort_keys=True, indent=4, separators=(',', ': '))  # Guardamos lo que hay dentro de S
-
-                    #print(json.dumps(d, sort_keys=True, indent=4))
-                    # print(json.dumps(chunker.parse(tagger.tag(a)), sort_keys=True, indent=4, separators=(',', ': ')))
-
+            finalJSON = {'Datos Personales': listas[0], 'Formacion': listas[1],
+                         'Experiencia Laboral': listas[2], 'Idiomas': listas[3],
+                         'Libros': listas[4], 'Extras': listas[5],
+                         'Emails': listas[6], 'Chunker - Datos Personales': cdp,
+                         'Chunker - Formacion': cf, 'Chunker - Experiencia Laboral': cel,
+                         'Chunker - Idiomas': ci, 'Chunker - Libros': cl,
+                         'Chunker - Extras': ce, 'Chunker - Emails': cem}
+            # Guardamos lo que hay dentro de S
+            json.dump(finalJSON, open(name + "final.json", 'w'), sort_keys=True, indent=4, separators=(',', ': '))
 
     except IOError as exc:
         if exc.errno != errno.EISDIR:  # No fallar si otro directorio es encontrado, simplemente ignorarlo
