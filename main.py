@@ -5,7 +5,10 @@
 # * Hugo Ferrando Seage
 # * Santiago Gualda Torrijos
 # * Cristian López-Ramos Rivera
-# TODO: IMPROVE SEGMENTATION!!!, choose mirror dynamically?
+# TODO: Improve chunker results (train with another dataset?)
+# TODO: Remove blank results
+# TODO: Check argv for chunker activation
+# TODO: Save JSON files ready for elasticsearch consumption (folders)
 
 import glob
 import errno
@@ -19,6 +22,8 @@ from nltk import *
 
 
 def main():
+    '''Main routine - Checks dependencies, parses CV,
+    extracts information and dumps it into a JSON file'''
     print("Iniciando el segmentador de curriculums...\n")
 
     # Descargar Tika
@@ -50,6 +55,8 @@ def main():
         print("Se procesaran los curriculums de la carpeta " + path + "\n")
 
     print("Procesando...")
+
+    activate_chunker = input("Do you want the chunker results? (y/n) ")
 
     # Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
     files = [f for f in glob.glob(path)
@@ -97,45 +104,47 @@ def main():
                         #print("Email encontrado!")
                         emails.append(email)
 
-                # Escritura a fichero txt
-                print("\nEscribiendo salida de fichero de " + name + ".txt\n")
-
-                # Separa la linea por palabras (whitespace) y agrega tag (tipo de palabra)
-                # Recorre todas las listas
-                cdp, cf, cel, ci, cl, ce, cem = ({} for i in range(7))
-                listaChunker = [cdp, cf, cel, ci, cl, ce, cem]
-
-                for idx, (lista, lchunk) in enumerate(zip(listas, listaChunker)):
-                    if not len(lista) == 0:  # Excepto si estan vacias
-                        a = [words for segments in lista for words in segments.split()]  # Separa cada palabra
-
-                        # POS Tagging y Chunker entrenados con Conll2002 espanol y Naive Bayes
-                        tree = chunker.parse(tagger.tag(a))
-                        personas, lugares, organizaciones = ([] for i in range(3))
-                        for subtree in tree.subtrees(filter = lambda t: t.label() == 'PER'):
-                            personas.append(" ".join([a for (a, b) in subtree.leaves()]))
-                        for subtree in tree.subtrees(filter = lambda t: t.label() == 'ORG'):
-                            organizaciones.append(" ".join([a for (a, b) in subtree.leaves()]))
-                        for subtree in tree.subtrees(filter = lambda t: t.label() == 'LOC'):
-                            lugares.append(" ".join([a for (a, b) in subtree.leaves()]))
-                        lchunk['S'] = {"Personas": personas,
-                                       "Organizaciones": organizaciones,
-                                       "Lugares": lugares}
-
+                # Escritura a JSON
                 section_json = {'Datos Personales': listas[0], 'Formacion': listas[1],
-                              'Experiencia Laboral': listas[2], 'Idiomas': listas[3],
-                              'Libros': listas[4], 'Extras': listas[5],
-                              'Emails': listas[6]}
-                chunker_json = {'Chunker - Datos Personales': cdp,
-                              'Chunker - Formacion': cf, 'Chunker - Experiencia Laboral': cel,
-                              'Chunker - Idiomas': ci, 'Chunker - Libros': cl,
-                              'Chunker - Extras': ce, 'Chunker - Emails': cem}
-                # Guardamos lo que hay dentro de S
+                                'Experiencia Laboral': listas[2], 'Idiomas': listas[3],
+                                'Libros': listas[4], 'Extras': listas[5],
+                                'Emails': listas[6]}
+
+                print("\nEscribiendo salida de fichero de " + name + "section.json\n")
                 json.dump(section_json, open(name + "section.json", 'w'),
                           sort_keys=True, indent=4, separators=(',', ': '))
 
-                json.dump(chunker_json, open(name + "chunker.json", 'w'),
-                          sort_keys=True, indent=4, separators=(',', ': '))
+                if (activate_chunker == 'y'):
+                    # Separa la linea por palabras (whitespace) y agrega tag (tipo de palabra)
+                    # Recorre todas las listas
+                    cdp, cf, cel, ci, cl, ce, cem = ({} for i in range(7))
+                    listaChunker = [cdp, cf, cel, ci, cl, ce, cem]
+
+                    for lista, lchunk in zip(listas, listaChunker):
+                        if not len(lista) == 0:  # Excepto si estan vacias
+                            # Separa cada palabra
+                            a = [words for segments in lista for words in segments.split()]
+
+                            # POS Tagging y Chunker entrenados con Conll2002 espanol y Naive Bayes
+                            tree = chunker.parse(tagger.tag(a))
+                            personas, lugares, organizaciones = ([] for i in range(3))
+                            for subtree in tree.subtrees(filter=lambda t: t.label() == 'PER'):
+                                personas.append(" ".join([a for (a, b) in subtree.leaves()]))
+                            for subtree in tree.subtrees(filter=lambda t: t.label() == 'ORG'):
+                                organizaciones.append(" ".join([a for (a, b) in subtree.leaves()]))
+                            for subtree in tree.subtrees(filter=lambda t: t.label() == 'LOC'):
+                                lugares.append(" ".join([a for (a, b) in subtree.leaves()]))
+                            lchunk['S'] = {"Personas": personas, "Organizaciones": organizaciones,
+                                           "Lugares": lugares}
+                    chunker_json = {'Chunker - Datos Personales': cdp,
+                                    'Chunker - Formacion': cf, 'Chunker - Experiencia Laboral': cel,
+                                    'Chunker - Idiomas': ci, 'Chunker - Libros': cl,
+                                    'Chunker - Extras': ce, 'Chunker - Emails': cem}
+
+                    # Escritura a JSON
+                    print("\nEscribiendo salida de fichero de " + name + "chunker.json\n")
+                    json.dump(chunker_json, open(name + "chunker.json", 'w'),
+                              sort_keys=True, indent=4, separators=(',', ': '))
 
         except IOError as exc:
             # No fallar si otro directorio es encontrado, simplemente ignorarlo
