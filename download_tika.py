@@ -1,17 +1,19 @@
+'''Downloads Apache Tika for file conversion'''
 import urllib.request as urllib2
 import hashlib
 import os.path
 
 
-def getFile(url):
-    # Obtencion del nombre del archivo (Ultima parte de la url)
+def get_file(url):
+    '''Obtencion del nombre del archivo (Ultima parte de la url)'''
     filename = url.split('/')[-1]
     if not filename:
         filename = ''
     return filename
 
 
-def chunkReport(bytes_so_far, chunk_size, total_size):
+def chunk_report(bytes_so_far, total_size):
+    '''Informs user about the percentage of the download'''
     percent = float(bytes_so_far) / total_size
     percent = round(percent*100, 2)
     if percent % 5 == 0:
@@ -22,6 +24,7 @@ def chunkReport(bytes_so_far, chunk_size, total_size):
 
 
 def download(url, chunk_size=8192, report_hook=None):
+    '''Downloads the actual file'''
     urlresponse = urllib2.urlopen(url)
     filename = getFile(url)
 
@@ -50,14 +53,14 @@ def download(url, chunk_size=8192, report_hook=None):
 
 
 def comprobarApacheTika(url):
-    filename = getFile(url)
+    filename = get_file(url)
     if filename == '':
         print("Nombre de archivo de ApacheTika no obtenido")
         exit()
 
     if not os.path.exists(filename):
         print("Apache Tika no encontrado, procediendo a su descarga: \n")
-        download(url, report_hook=chunkReport)
+        download(url, report_hook=chunk_report)
 
     if not os.path.exists(filename):
         print("Apache Tika no encontrado en el directorio")
