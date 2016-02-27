@@ -59,7 +59,7 @@ def main():
         try:
             with open(name) as f:
                 # Usar tika para pasar archivo a texto plano
-                raw = subprocess.check_output(["java", "-jar",  "tika-app-1.11.jar",  "-t", name],
+                raw = subprocess.check_output(["java", "-jar", "tika-app-1.11.jar", "-t", name],
                                               universal_newlines=True)
 
                 print("Procesando " + name + "\n")
@@ -122,19 +122,24 @@ def main():
                                        "Organizaciones": organizaciones,
                                        "Lugares": lugares}
 
-                final_json = {'Datos Personales': listas[0], 'Formacion': listas[1],
+                section_json = {'Datos Personales': listas[0], 'Formacion': listas[1],
                               'Experiencia Laboral': listas[2], 'Idiomas': listas[3],
                               'Libros': listas[4], 'Extras': listas[5],
-                              'Emails': listas[6], 'Chunker - Datos Personales': cdp,
+                              'Emails': listas[6]}
+                chunker_json = {'Chunker - Datos Personales': cdp,
                               'Chunker - Formacion': cf, 'Chunker - Experiencia Laboral': cel,
                               'Chunker - Idiomas': ci, 'Chunker - Libros': cl,
                               'Chunker - Extras': ce, 'Chunker - Emails': cem}
                 # Guardamos lo que hay dentro de S
-                json.dump(final_json, open(name + "final.json", 'w'),
+                json.dump(section_json, open(name + "section.json", 'w'),
+                          sort_keys=True, indent=4, separators=(',', ': '))
+
+                json.dump(chunker_json, open(name + "chunker.json", 'w'),
                           sort_keys=True, indent=4, separators=(',', ': '))
 
         except IOError as exc:
             # No fallar si otro directorio es encontrado, simplemente ignorarlo
             if exc.errno != errno.EISDIR:
                 raise  # Propagacion de errores
+
 main()
