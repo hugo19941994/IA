@@ -12,7 +12,7 @@ def get_file(url):
     return filename
 
 
-def chunk_report(bytes_so_far, total_size):
+def chunk_report(bytes_so_far, chunk_size, total_size):
     '''Informs user about the percentage of the download'''
     percent = float(bytes_so_far) / total_size
     percent = round(percent*100, 2)
@@ -26,7 +26,7 @@ def chunk_report(bytes_so_far, total_size):
 def download(url, chunk_size=8192, report_hook=None):
     '''Downloads the actual file'''
     urlresponse = urllib2.urlopen(url)
-    filename = getFile(url)
+    filename = get_file(url)
 
     # Obtencion de la longitud de archivo
     meta = urlresponse.info()
@@ -52,7 +52,8 @@ def download(url, chunk_size=8192, report_hook=None):
     return bytes_so_far
 
 
-def comprobarApacheTika(url):
+def comprobar_apache_tika(url):
+    '''Checks the SHA1 signature of the downloaded file'''
     filename = get_file(url)
     if filename == '':
         print("Nombre de archivo de ApacheTika no obtenido")
@@ -69,7 +70,7 @@ def comprobarApacheTika(url):
     if os.path.exists(filename):
         # Comprobar Tika con su SHA1
         with open(filename, 'rb') as file:
-            if hashlib.sha1(file.read()).hexdigest() == "59cc7c4c48a6a41899ca282d925b2738d05a45a8":
+            if hashlib.sha1(file.read()).hexdigest() == "8d5c5f9e14b53a807a9d3d99ef34e63c38b9b418":
                 print("SHA1 correcto")
             else:
                 print("SHA1 incorrecto\nBorra el archivo y prueba otra vez")

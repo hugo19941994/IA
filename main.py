@@ -18,7 +18,7 @@ import sys
 import pickle
 import json
 import nltk
-from download_tika import comprobarApacheTika
+from download_tika import comprobar_apache_tika
 from regex_rules import *
 from nltk import *
 
@@ -30,7 +30,7 @@ def main():
 
     # Descargar Tika
     print("Comprobando TIKA...")
-    comprobarApacheTika('http://ftp.cixug.es/apache/tika/tika-app-1.11.jar')
+    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.12.jar')
     # Descargar tokenizador de NLTK
     print("Comprobando el tokenizador de NLTK...")
     # nltk.download()
@@ -68,7 +68,7 @@ def main():
         try:
             # Usar tika para pasar archivo a texto plano
             raw = subprocess.check_output(["java", "-jar",
-                                           "tika-app-1.11.jar",
+                                           "tika-app-1.12.jar",
                                            "-t", name],
                                           universal_newlines=True)
 
