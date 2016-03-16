@@ -64,7 +64,7 @@ def main():
     files = [f for f in glob.glob(path)
              if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
 
-    for name in files:
+    for count, name in enumerate(files):
         try:
             # Usar tika para pasar archivo a texto plano
             raw = subprocess.check_output(["java", "-jar",
@@ -116,10 +116,11 @@ def main():
                             'Extras': listas[5],
                             'Emails': listas[6]}
 
-            os.makedirs("./out/" + name, exist_ok=True)
+            os.makedirs("./out/section", exist_ok=True)
+            os.makedirs("./out/chunker", exist_ok=True)
             print("Escribiendo salida de fichero de " + name +
                   "section.json\n")
-            json.dump(section_json, open("./out/" + name + "/section.json", 'w'),
+            json.dump(section_json, open("./out/section/" + str(count) + ".json", 'w'),
                       sort_keys=True, indent=4, separators=(',', ': '))
 
             if activate_chunker == 'y':
@@ -152,7 +153,7 @@ def main():
 
                 # Escritura a JSON
                 print("\nEscribiendo salida de fichero de " + name + "chunker.json\n")
-                json.dump(chunker_json, open("./out/" + name + "/chunker.json", 'w'),
+                json.dump(chunker_json, open("./out/chunker/" + str(count) + ".json", 'w'),
                           sort_keys=True, indent=4, separators=(',', ': '))
 
         except IOError as exc:
