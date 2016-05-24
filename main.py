@@ -30,7 +30,7 @@ def main():
 
     # Descargar Tika
     print("Comprobando TIKA...")
-    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.12.jar')
+    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.13.jar')
     # Descargar tokenizador de NLTK
     print("Comprobando el tokenizador de NLTK...")
     # nltk.download()
@@ -68,7 +68,7 @@ def main():
         try:
             # Usar tika para pasar archivo a texto plano
             raw = subprocess.check_output(["java", "-jar",
-                                           "tika-app-1.12.jar",
+                                           "tika-app-1.13.jar",
                                            "-t", name],
                                           universal_newlines=True)
 

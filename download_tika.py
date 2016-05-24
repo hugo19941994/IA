@@ -70,7 +70,7 @@ def comprobar_apache_tika(url):
     if os.path.exists(filename):
         # Comprobar Tika con su SHA1
         with open(filename, 'rb') as file:
-            if hashlib.sha1(file.read()).hexdigest() == "8d5c5f9e14b53a807a9d3d99ef34e63c38b9b418":
+            if hashlib.sha1(file.read()).hexdigest() == "e0649edcc26563f59f7fc37f223d83f4988d5566":
                 print("SHA1 correcto")
             else:
                 print("SHA1 incorrecto\nBorra el archivo y prueba otra vez")
