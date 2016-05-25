@@ -67,10 +67,13 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/buscador/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String searchCv(@PathVariable("id") String id, @RequestParam(value = "nombre") String nombre,
-			@RequestParam(value = "direccion") String direccion, @RequestParam(value = "dni") String dni,
-			@RequestParam(value = "tecnologia") String tecnologia, @RequestParam(value = "empresa") String empresa,
-			@RequestParam(value = "idiomas") String idiomas) throws Exception {
+	public @ResponseBody String searchCv(HttpServletResponse response, @PathVariable("id") String id,
+			@RequestParam(value = "nombre") String nombre, @RequestParam(value = "direccion") String direccion,
+			@RequestParam(value = "dni") String dni, @RequestParam(value = "tecnologia") String tecnologia,
+			@RequestParam(value = "empresa") String empresa, @RequestParam(value = "idiomas") String idiomas)
+					throws Exception {
+
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		// Creamos el objeto search Object List donde almacenaremos las
 		// busquedas que encajen con los parametros
@@ -156,7 +159,9 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/curriculums/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getCv(@PathVariable("id") String id) throws Exception {
+	public @ResponseBody String getCv(HttpServletResponse response, @PathVariable("id") String id) throws Exception {
+
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		StringBuilder processOutput = new StringBuilder();
 
@@ -206,8 +211,10 @@ public class MainController {
 	 *             -> si no se encuentra el curriculum en el repositorio
 	 */
 	@RequestMapping(value = "/descargas/{file_name}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<InputStreamResource> downloadFile(@PathVariable("file_name") String fileName)
-			throws IOException {
+	public @ResponseBody ResponseEntity<InputStreamResource> downloadFile(HttpServletResponse response,
+			@PathVariable("file_name") String fileName) throws IOException {
+
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		// TODO Add within pdf return content type HTML and DOC. Check it with
 		// regex.
@@ -218,34 +225,36 @@ public class MainController {
 				.body(new InputStreamResource(pdfFile.getInputStream()));
 	}
 
-    @RequestMapping(value = "/subir", method = RequestMethod.POST)
-    public @ResponseBody String uploadFile(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                 byte[] bytes = file.getBytes();
- 
-                // Creating the directory to store file
-                String rootPath = System.getProperty("user.dir");  // Current directory
-                File dir = new File(rootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "cvReal");
-                if (!dir.exists())
-                    dir.mkdirs();
- 
-                // Create the file on server
-                File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + name);
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
-                stream.write(bytes);
-                stream.close();
-                return "You successfully uploaded file=" + name;
+	@RequestMapping(value = "/subir", method = RequestMethod.POST)
+	public @ResponseBody String uploadFile(HttpServletResponse response, @RequestParam("name") String name,
+			@RequestParam("file") MultipartFile file) {
 
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
-            } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + name
-                    + " because the file was empty.";
-        }
-    }
+		if (!file.isEmpty()) {
+			try {
+				byte[] bytes = file.getBytes();
+
+				// Creating the directory to store file
+				String rootPath = System.getProperty("user.dir"); // Current
+																	// directory
+				File dir = new File(rootPath + File.separator + "src" + File.separator + "main" + File.separator
+						+ "resources" + File.separator + "cvReal");
+				if (!dir.exists())
+					dir.mkdirs();
+
+				// Create the file on server
+				File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+				stream.write(bytes);
+				stream.close();
+				return "You successfully uploaded file=" + name;
+
+			} catch (Exception e) {
+				return "You failed to upload " + name + " => " + e.getMessage();
+			}
+		} else {
+			return "You failed to upload " + name + " because the file was empty.";
+		}
+	}
 }
