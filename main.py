@@ -12,11 +12,13 @@ Description: Parses CV files (in several formats)
 # TODO: Remove blank results
 # TODO: Check argv for chunker activation
 
-import glob
+import os
 import errno
 import sys
-import pickle
+import glob
+import requests
 import json
+import pickle
 import nltk
 from download_tika import comprobar_apache_tika
 from regex_rules import *
@@ -33,17 +35,10 @@ def main():
     comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.13.jar')
     # Descargar tokenizador de NLTK
     print("Comprobando el tokenizador de NLTK...")
-    # nltk.download()
     nltk.download("punkt")
     # Cargar tokenizador de español
     print("Cargando el tokenizador...")
-    #tokenizer = nltk.data.load("tokenizers/punkt/spanish.pickle")
     tokenizer = pickle.load(open("nltk/spanish.pickle", 'rb'))
-    # Spanish conll2002 POS tagger
-    tagger = pickle.load(open("nltk/conll2002_aubt.pickle", 'rb'))
-    # Chunker para español entrenado con corpus Conll2002 usando Naive Bayes
-    #chunker = nltk.data.load("chunkers/conll2002_NaiveBayes.pickle")
-    chunker = pickle.load(open("nltk/conll2002_NaiveBayes.pickle", 'rb'))
     # Stemmer para español que viene con NLTK
     stemmer = nltk.SnowballStemmer("spanish")
 
@@ -58,8 +53,6 @@ def main():
 
     print("Procesando...")
 
-    activate_chunker = input("Do you want the chunker results? (y/n) ")
-
     # Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
     files = [f for f in glob.glob(path)
              if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
@@ -70,7 +63,10 @@ def main():
             raw = subprocess.check_output(["java", "-jar",
                                            "tika-app-1.13.jar",
                                            "-t", name],
-                                          universal_newlines=True)
+                                          universal_newlines=False).decode('utf-8')
+
+            # Eliminate lines that cointain only whitespace
+            raw = "".join([s for s in raw.strip().splitlines(True) if s.strip()])
 
             print("Procesando " + name + "\n")
 
@@ -123,42 +119,29 @@ def main():
             json.dump(section_json, open("./out/section/" + str(count) + ".json", 'w'),
                       sort_keys=True, indent=4, separators=(',', ': '))
 
-            if activate_chunker == 'y':
-                # Separa la linea por palabras (whitespace)
-                # y agrega tag (tipo de palabra)
-                # Recorre todas las listas
-                cdp, cf, cel, ci, cl, ce, cem = ({} for i in range(7))
-                lista_chunker = [cdp, cf, cel, ci, cl, ce, cem]
+            # Name Entity Recognition with raw text
+            # Text must be divided into smaller pieces becuase Alchemy doesn't
+            # accept very long text
+            final_json = []
+            with open('./apikey.txt', 'r') as f:
+                apikey = f.readline()
+            raw_parts = textwrap.wrap(raw, 1000)  # 1000 letter max parts
+            for part in raw_parts:
+                print(count)
+                payload = {'apikey': apikey[:-1], 'text': part, 'outputMode': 'json'}
+                r = requests.get('http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities', params=payload)
+                for entity in r.json()['entities']:
+                    final_json.append(entity)
 
-                for lista, lchunk in zip(listas, lista_chunker):
-                    if not len(lista) == 0:  # Excepto si estan vacias
-                        # Separa cada palabra
-                        word = [words for segments in lista for words in segments.split()]
-
-                        # POS Tagging y Chunker entrenados con Conll2002 español y Naive Bayes
-                        chk_tree = chunker.parse(tagger.tag(word))
-                        personas, lugares, organizaciones = ([] for i in range(3))
-                        for subtree in chk_tree.subtrees(filter=lambda t: t.label() == 'PER'):
-                            personas.append(" ".join([a for (a, b) in subtree.leaves()]))
-                        for subtree in chk_tree.subtrees(filter=lambda t: t.label() == 'ORG'):
-                            organizaciones.append(" ".join([a for (a, b) in subtree.leaves()]))
-                        for subtree in chk_tree.subtrees(filter=lambda t: t.label() == 'LOC'):
-                            lugares.append(" ".join([a for (a, b) in subtree.leaves()]))
-                        lchunk['S'] = {"Personas": personas, "Organizaciones": organizaciones,
-                                       "Lugares": lugares}
-                chunker_json = {'Chunker - Datos Personales': cdp,
-                                'Chunker - Formacion': cf, 'Chunker - Experiencia Laboral': cel,
-                                'Chunker - Idiomas': ci, 'Chunker - Libros': cl,
-                                'Chunker - Extras': ce, 'Chunker - Emails': cem}
-
-                # Escritura a JSON
-                print("\nEscribiendo salida de fichero de " + name + "chunker.json\n")
-                json.dump(chunker_json, open("./out/chunker/" + str(count) + ".json", 'w'),
-                          sort_keys=True, indent=4, separators=(',', ': '))
+            # Escritura a JSON
+            print("\nEscribiendo salida de fichero de " + name + "chunker.json\n")
+            json.dump(final_json, open("./out/chunker/" + str(count) + ".json", 'w'),
+                      sort_keys=True, indent=4, separators=(',', ': '))
 
         except IOError as exc:
             # No fallar si otro directorio es encontrado, simplemente ignorarlo
             if exc.errno != errno.EISDIR:
                 raise  # Propagacion de errores
 
+            print(raw.split('\n', 1)[1])
 main()
