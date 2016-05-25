@@ -218,15 +218,15 @@ public class MainController {
 				.body(new InputStreamResource(pdfFile.getInputStream()));
 	}
 
-    @RequestMapping(value = "/subir/{file_name}", method = RequestMethod.POST)
+    @RequestMapping(value = "/subir", method = RequestMethod.POST)
     public @ResponseBody String uploadFile(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
             try {
                  byte[] bytes = file.getBytes();
  
                 // Creating the directory to store file
-                String rootPath = System.getProperty("hfs.home");
-                File dir = new File(rootPath + File.separator + "restcvparser");
+                String rootPath = System.getProperty("user.dir");  // Current directory
+                File dir = new File(rootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "cvReal");
                 if (!dir.exists())
                     dir.mkdirs();
  
@@ -238,6 +238,8 @@ public class MainController {
                 stream.write(bytes);
                 stream.close();
                 return "You successfully uploaded file=" + name;
+
+
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
             }
