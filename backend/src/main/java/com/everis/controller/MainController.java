@@ -2,8 +2,9 @@
  * REST service
  * 
  * @author: Jorge de Castro
- * @version: 17/03/2016/A
- * @see <a href = "https://bitbucket.org/jdecastroc/restcvparser" /> Bitbucket
+ * @author: Hugo Ferrando Seage
+ * @version: 25/05/2016/A
+ * @see <a href = "https://github.com/hugo19941994/CV-Parser" /> Github
  *      repository </a>
  */
 package com.everis.controller;
@@ -30,6 +31,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.apache.commons.exec.*;
 
 /**
  * La clase MainController es el controlador REST. Se encarga entonces de
@@ -226,7 +229,7 @@ public class MainController {
  
                 // Creating the directory to store file
                 String rootPath = System.getProperty("user.dir");  // Current directory
-                File dir = new File(rootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "cvReal");
+                File dir = new File(rootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "upload");
                 if (!dir.exists())
                     dir.mkdirs();
  
@@ -237,8 +240,15 @@ public class MainController {
                         new FileOutputStream(serverFile));
                 stream.write(bytes);
                 stream.close();
-                return "You successfully uploaded file=" + name;
 
+                // Execute bash script to parse uploaded file and upload to elastic
+                String command = "bash ./indexCv.sh";
+                CommandLine oCmdLine = CommandLine.parse(command);
+                DefaultExecutor oDefaultExecutor = new DefaultExecutor();
+                oDefaultExecutor.setWorkingDirectory(new File("./src/main/resources"));
+                oDefaultExecutor.execute(oCmdLine);
+
+                return "You successfully uploaded file=" + name;
 
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
