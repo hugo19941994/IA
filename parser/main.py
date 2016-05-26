@@ -114,8 +114,8 @@ def main():
 
             os.makedirs("./out/section", exist_ok=True)
             os.makedirs("./out/chunker", exist_ok=True)
-            print("Escribiendo salida de fichero de " + name +
-                  "section.json\n")
+
+            print("Escribiendo salida de fichero de ./out/section/" + str(count) + ".json\n")
             json.dump(section_json, open("./out/section/" + str(count) + ".json", 'w'),
                       sort_keys=True, indent=4, separators=(',', ': '))
 
@@ -134,7 +134,7 @@ def main():
                     final_json.append(entity)
 
             # Escritura a JSON
-            print("\nEscribiendo salida de fichero de " + name + "chunker.json\n")
+            print("\nEscribiendo salida de fichero de ./out/chunker/" + str(count) + ".json\n")
             json.dump(final_json, open("./out/chunker/" + str(count) + ".json", 'w'),
                       sort_keys=True, indent=4, separators=(',', ': '))
 
