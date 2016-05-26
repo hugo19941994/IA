@@ -71,3 +71,8 @@ local.properties
 hs_err_pid*
 
 src/main/resources/cvReal/
+src/main/resources/counter.txt
+src/main/resources/cv/
+src/main/resources/cvReal/
+src/main/resources/upload/
+

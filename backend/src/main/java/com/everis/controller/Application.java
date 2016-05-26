@@ -3,7 +3,7 @@
  * 
  * @author: Jorge de Castro
  * @version: 17/03/2016/A
- * @see <a href = "https://bitbucket.org/jdecastroc/restcvparser" /> Bitbucket
+ * @see <a href = "https://github.com/hugo19941994/CV-Parser" /> Github
  *      repository </a>
  */
 package com.everis.controller;
