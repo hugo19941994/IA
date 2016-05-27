@@ -233,16 +233,16 @@ public class MainController {
 	public @ResponseBody String deleteEntry(HttpServletResponse response,
 			@PathVariable("id") String id) throws IOException {
 
-		response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
-        // Execute bash script to parse uploaded file and upload to elastic
+        // Execute bash script to delete an indexed CV
         String command = "bash ./deleteCv.sh " + id;
         CommandLine oCmdLine = CommandLine.parse(command);
         DefaultExecutor oDefaultExecutor = new DefaultExecutor();
         oDefaultExecutor.setWorkingDirectory(new File("./src/main/resources"));
         oDefaultExecutor.execute(oCmdLine);
 
-		return "Deleted a CV";
+        return "Deleted " + id + " CV";
     }
 
     @RequestMapping(value = "/subir", method = RequestMethod.POST)
