@@ -47,7 +47,7 @@ do
         (cd ../../../../parser; python main.py ../backend/src/main/resources/upload/$filename) & wait
 
         # Move parsed JSON
-        mv /home/hfs/CV-Parser/parser/out/section/0.json "./cv/$COUNTER.json"
+        mv /home/hfs/CV-Parser/parser/out/0.json "./cv/$COUNTER.json"
 
         # Get content of JSON
         DATA=$(less ./cv/$COUNTER.json)

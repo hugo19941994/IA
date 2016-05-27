@@ -8,140 +8,201 @@ Inteligencia Artificial
 Description: Parses CV files (in several formats)
              and outputs useful information in JSON
 '''
-# TODO: Improve chunker results (train with another dataset?)
-# TODO: Remove blank results
-# TODO: Check argv for chunker activation
 
 import os
 import errno
 import sys
 import glob
-import requests
 import json
 import pickle
+import subprocess
+import textwrap
+import requests
 import nltk
 from download_tika import comprobar_apache_tika
-from regex_rules import *
-from nltk import *
+from regex_rules import REGEX_RULES, REGEX_EMAIL
+
+
+def check_download():
+    '''Cheks if Tika and NLTK are installed.
+    Proceeds to download if not present.
+    Loads the spanish tokenizer and stemmer for later use'''
+
+    print("Checking Apache Tika")
+    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.13.jar')
+
+    print("Checking NLTK and punkt")
+    nltk.download("punkt")
+
+    print("Loading spanish tokenizer and stemmer")
+    tokenizer = pickle.load(open("nltk/spanish.pickle", 'rb'))
+    stemmer = nltk.SnowballStemmer("spanish")
+
+    return tokenizer, stemmer
+
+
+def check_path():
+    '''If an argument is present it will be used as
+    the only folder or file to parse.
+    If no argument is present all files inside the cv folder will be parsed'''
+
+    if len(sys.argv) > 1:
+        path = sys.argv[1]
+    else:
+        path = 'cv/*.*'
+
+    print("Parsing following file/folder: " + path)
+
+    # Accepted file formats: PDF, HTML, Word, OpenOffice
+    files = [f for f in glob.glob(path)
+             if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
+
+    return files
+
+
+def convert_to_plaintext(name):
+    '''Use Apache Tike to convert files into plaintext ones
+    Finally removes any line that contains no information'''
+
+    # Use Tika to change format to plain text
+    raw_text = subprocess.check_output(["java", "-jar",
+                                        "tika-app-1.13.jar",
+                                        "-t", name],
+                                       universal_newlines=False).decode('utf-8')
+
+    # Eliminate lines that cointain only whitespace
+    return "".join([s for s in raw_text.strip().splitlines(True) if s.strip()])
+
+
+def tokenize_plaintext(tokenizer, stemmed_text):
+    '''Given a text split it into parragraphs and tokenize each one'''
+
+    token_list = []
+    # Divide text into parragraphs
+    paragraphs = [p for p in stemmed_text.split('\n') if p]
+
+    for paragraph in paragraphs:
+        # Tokenize each parragraph
+        tokens = tokenizer.tokenize(paragraph)
+        for token in tokens:
+            token_list.append(token)  # Each token on the same array
+    return token_list
+
+
+def search_sections(lists, tokens):
+    '''Using a series of regex reules (representing a section of a CV)
+    search for matches in every token.
+    Every time a match occurs the following tokens will
+    be placed in that category until a new match occurs'''
+
+    # 0 = Datos Personales, 1 = Formación, 2 = Exp Laboral
+    # 3 = Idiomas, 4 = Libros, 5 = Extras, 6 = Emails
+    last = 0
+    for token in tokens:  # Search for match
+        # Using all regex rules
+        for num, reg in enumerate(REGEX_RULES):
+            if reg.match(token):  # Match
+                last = num  # Change section
+                break
+        # Add token to corresponding list
+        lists[last].append(token)
+
+    for token in lists[0]:  # Search for emails inside 'Datos Personales'
+        match = REGEX_EMAIL.findall(token)
+        for email in match:
+            lists[6].append(email)
+
+
+def ner(stemmed_text):
+    '''Perform Name Entity Recognition (NER) using the Aclhemy API
+    The apikey must be placed into a plaintext file called apikey.txt
+    The text that will be analyzed must be divided into smaller chunks due
+    to the restrictions imposed by Alche,my'''
+
+    alchemy_result = []
+    with open('./apikey.txt', 'r') as apikey_file:
+        apikey = apikey_file.readline()
+    raw_parts = textwrap.wrap(stemmed_text, 1000)  # 1000 letter max parts
+    for count, part in enumerate(raw_parts):
+        print("Sending request " + str(count) + " to Alchemy")
+        payload = {'apikey': apikey[:-1], 'text': part, 'outputMode': 'json'}
+        req = requests.post('http://access.alchemyapi.com/calls/text/'
+                            'TextGetRankedNamedEntities', params=payload)
+        if req.json()['status'] == 'ERROR':
+            print("Error in Alchemy, aborting Name Entity Recognition")
+            break
+        else:
+            for entity in req.json()['entities']:
+                alchemy_result.append(entity)
+    return alchemy_result
+    # payload = {'apikey': apikey[:-1],
+    # 'text': stemmed_text, 'outputMode': 'json'}
+    # req = requests.post('http://access.alchemyapi.com/calls/text/'
+    # 'TextGetRankedNamedEntities', data=payload)
+    # for entity in req.json()['entities']:
+    # alchemy_result.append(entity)
+    # return alchemy_result
+
+
+def save_json(lists, alchemy_result, count):
+    '''Saves the results of the parsed CV into a JSON file named as the index'''
+
+    out_json = {'Datos Personales': lists[0],
+                'Formacion': lists[1],
+                'Experiencia Laboral': lists[2],
+                'Idiomas': lists[3],
+                'Libros': lists[4],
+                'Extras': lists[5],
+                'Emails': lists[6],
+                'NER': alchemy_result}
+
+    os.makedirs("./out", exist_ok=True)  # Folder where results are saved
+
+    print("Writing file ./out/" + str(count) + ".json")
+
+    json.dump(out_json, open("./out/" + str(count) + ".json", 'w'),
+              sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def create_lists():
+    '''Creates empty lists to store the different parts of the CVs'''
+    par = []  # Stores parragraph tokens
+    datos, educacion, laboral, idiomas, libros, extras, emails = ([] for i in range(7))
+    return par, [datos, educacion, laboral, idiomas, libros, extras, emails]
 
 
 def main():
     '''Main routine - Checks dependencies, parses CV,
     extracts information and dumps it into a JSON file'''
-    print("Iniciando el segmentador de curriculums...\n")
+    print("Starting CV-Parser")
 
-    # Descargar Tika
-    print("Comprobando TIKA...")
-    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.13.jar')
-    # Descargar tokenizador de NLTK
-    print("Comprobando el tokenizador de NLTK...")
-    nltk.download("punkt")
-    # Cargar tokenizador de español
-    print("Cargando el tokenizador...")
-    tokenizer = pickle.load(open("nltk/spanish.pickle", 'rb'))
-    # Stemmer para español que viene con NLTK
-    stemmer = nltk.SnowballStemmer("spanish")
-
-    # Determinar si se lee desde el directorio de curriculums
-    # o si se pasa el curriculum por parámetros
-    if len(sys.argv) > 1:
-        path = sys.argv[1]
-        print("Se procesara el siguiente curriculum: " + path + "\n")
-    else:
-        path = 'cv/*.*'
-        print("Se procesaran los curriculums de la carpeta " + path + "\n")
-
-    print("Procesando...")
-
-    # Lectura de de los curriculums en formato pdf, html, Word y OpenOfice
-    files = [f for f in glob.glob(path)
-             if f.lower().endswith((".pdf", ".html", ".doc", ".docx", ".odt"))]
+    tokenizer, stemmer = check_download()
+    par, lists = create_lists()
+    files = check_path()
 
     for count, name in enumerate(files):
         try:
-            # Usar tika para pasar archivo a texto plano
-            raw = subprocess.check_output(["java", "-jar",
-                                           "tika-app-1.13.jar",
-                                           "-t", name],
-                                          universal_newlines=False).decode('utf-8')
+            print("\nProcessing " + name)
 
-            # Eliminate lines that cointain only whitespace
-            raw = "".join([s for s in raw.strip().splitlines(True) if s.strip()])
+            print("Converting to plain text")
+            print("Stemming")
+            # Stem plaintext using Spanish NLTK stemmer
+            stemmed_text = stemmer.stem(convert_to_plaintext(name))
 
-            print("Procesando " + name + "\n")
+            print("Tokenizing")
+            par = tokenize_plaintext(tokenizer, stemmed_text)
 
-            # Crear e inicializar listas
-            par, emails, datos, educacion, laboral, idiomas, libros, extras = ([] for i in range(8))
-            listas = [datos, educacion, laboral, idiomas, libros, extras, emails]
+            print("Regex matching to search CV sections")
+            search_sections(lists, par)
 
-            # User stemmer de español
-            raw2 = stemmer.stem(raw)
+            print("Searching for Named Entities using Alchemy")
+            alchemy_result = ner(stemmed_text)
 
-            print("Tokenizando el contenido...")
-            # Cortar texto en párrafos
-            paragraphs = [p for p in raw2.split('\n') if p]
-            for paragraph in paragraphs:
-                # Tokenizar cada parrafo
-                tokens = tokenizer.tokenize(paragraph)
-                for token in tokens:
-                    par.append(token)  # Poner cada token en el mismo array
-
-            # 0 = Datos Personales, 1 = Formación,
-            # 2 = Exp Laboral, 3 = Idiomas, 4 = Emails
-            last = 0
-            for token in par:  # Buscar cabeceras
-                # Recorre todas las regex
-                for num, reg in enumerate(REGEX_RULES):
-                    if reg.match(token):  # Si coincide
-                        last = num
-                        break
-                # Poner contenido de un segmento en su propio array
-                listas[last].append(token)
-
-            for token in datos:  # Buscar e-mails dentro de Datos personales
-                match = REGEX_EMAIL.findall(token)
-                for email in match:
-                    emails.append(email)
-
-            # Escritura a JSON
-            section_json = {'Datos Personales': listas[0],
-                            'Formacion': listas[1],
-                            'Experiencia Laboral': listas[2],
-                            'Idiomas': listas[3],
-                            'Libros': listas[4],
-                            'Extras': listas[5],
-                            'Emails': listas[6]}
-
-            os.makedirs("./out/section", exist_ok=True)
-            os.makedirs("./out/chunker", exist_ok=True)
-
-            print("Escribiendo salida de fichero de ./out/section/" + str(count) + ".json\n")
-            json.dump(section_json, open("./out/section/" + str(count) + ".json", 'w'),
-                      sort_keys=True, indent=4, separators=(',', ': '))
-
-            # Name Entity Recognition with raw text
-            # Text must be divided into smaller pieces becuase Alchemy doesn't
-            # accept very long text
-            final_json = []
-            with open('./apikey.txt', 'r') as f:
-                apikey = f.readline()
-            raw_parts = textwrap.wrap(raw, 1000)  # 1000 letter max parts
-            for part in raw_parts:
-                print(count)
-                payload = {'apikey': apikey[:-1], 'text': part, 'outputMode': 'json'}
-                r = requests.get('http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities', params=payload)
-                for entity in r.json()['entities']:
-                    final_json.append(entity)
-
-            # Escritura a JSON
-            print("\nEscribiendo salida de fichero de ./out/chunker/" + str(count) + ".json\n")
-            json.dump(final_json, open("./out/chunker/" + str(count) + ".json", 'w'),
-                      sort_keys=True, indent=4, separators=(',', ': '))
+            save_json(lists, alchemy_result, count)
 
         except IOError as exc:
             # No fallar si otro directorio es encontrado, simplemente ignorarlo
             if exc.errno != errno.EISDIR:
                 raise  # Propagacion de errores
 
-            print(raw.split('\n', 1)[1])
 main()
