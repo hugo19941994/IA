@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="SemiColonWeb" />
+
+    <!-- Stylesheets
+	============================================= -->
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="css/swiper.css" type="text/css" />
+    <link rel="stylesheet" href="css/dark.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-icons.css" type="text/css" />
+    <link rel="stylesheet" href="css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+
+    <link rel="stylesheet" href="css/responsive.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lt IE 9]>
+		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	<![endif]-->
+
+    <!-- Document Title
+	============================================= -->
+    <title>Everis - Búsqueda de CVs</title>
+
+</head>
+
+<body class="stretched side-header">
+
+    <!-- Document Wrapper
+	============================================= -->
+    <div id="wrapper" class="clearfix">
+
+        <!-- Header
+		============================================= -->
+        <header id="header" class="no-sticky">
+
+            <div id="header-wrap">
+
+                <div class="container clearfix">
+
+                    <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+
+                    <!-- Logo
+					============================================= -->
+                    <div id="logo" class="nobottomborder">
+                        <a href="index.html" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
+                    </div>
+                    <!-- #logo end -->
+
+                    <!-- Primary Navigation
+					============================================= -->
+                    <nav id="primary-menu">
+                        <ul>
+                            <li>
+                                <a href="index.html">
+                                    <div>Índice</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div>Gestión de repositorio</div>
+                                </a>
+                            </li>
+                            <li class="current">
+                                <a href="buscador.html">
+                                    <div>Búsqueda de CV</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div>Gestión de usuarios</div>
+                                </a>
+                                <!-- Solo para administradores-->
+                            </li>
+                            <br>
+                            <br>
+                            <li>
+                                <a href="index.html">
+                                    <div>Ayuda</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html">
+                                    <div>Contacto</div>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                    <!-- #primary-menu end -->
+
+                    <div class="clearfix visible-md visible-lg">
+                        <a href="#" class="social-icon si-small si-borderless si-github">
+                            <i class="icon-github"></i>
+                            <i class="icon-github"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+        <!-- #header end -->
+
+        <!-- Content
+		============================================= -->
+        <section id="content">
+
+            <div class="content-wrap">
+
+                <div class="promo promo-full promo-border header-stick bottommargin-lg">
+                    <div class="container clearfix">
+                        <h3>Buscador de curriculums</h3>
+                        <span>Añada las opciones necesarias para realizar la búsqueda de manera general o más precisa.</span>
+                    </div>
+                </div>
+
+                <div class="container clearfix">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title text-center">Busqueda de Curriculums</div>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse in">
+                            <div id="contenedorOpcional" class="panel-body">
+                                <div class="text-center">
+                                  <!--  <button id="volverBuscar" name="buscar" class="btn btn-primary center-block">Volver a buscar</button>-->
+                                    <a id="volverBuscar" name="buscar" class="button button-xlarge tright">Volver a buscar<i class="icon-refresh"></i></a>
+                                </div>
+                            </div>
+                            <div id="formularioBusqueda" class="panel-body text-center form-horizontal">
+
+                                <div class="col_half">
+                                    <h4>Parámetros de búsqueda</h4>
+                                    <label class="col-md-4 control-label" for="nombre">Nombre</label>
+                                    <div class="col-md-4">
+                                        <input id="nombre" name="nombre" type="text" placeholder="" class="input-md">
+                                        <button class="btn btn-success btn-number" id="addNombre" type="button" style="display: inline-block;">
+                                            <i class="icon-line-circle-plus"></i>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+
+                                    <label class="col-md-4 control-label" for="dni">DNI</label>
+                                    <div class="col-md-4">
+                                        <input id="dni" name="dni" type="text" placeholder="" class="input-md">
+                                        <button class="btn btn-success btn-number" id="addDNI" type="button" style="display: inline-block;">
+                                            <i class="icon-line-circle-plus"></i>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+
+
+                                    <label class="col-md-4 control-label" for="empresa">Empresa</label>
+                                    <div class="col-md-4">
+                                        <input id="empresa" name="empresa" type="text" placeholder="" class="input-md">
+                                        <button class="btn btn-success btn-number" id="addEmpresa" type="button" style="display: inline-block;">
+                                            <i class="icon-line-circle-plus"></i>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+
+
+                                    <label class="col-md-4 control-label" for="direccion">Dirección</label>
+                                    <div class="col-md-4">
+                                        <input id="direccion" name="direccion" type="text" placeholder="" class="input-md">
+                                        <button class="btn btn-success btn-number" id="addDireccion" type="button" style="display: inline-block;">
+                                            <i class="icon-line-circle-plus"></i>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+
+
+                                    <label class="col-md-4 control-label" for="tecnologia">Habilidades</label>
+                                    <div class="col-md-4">
+                                        <input id="habilidad" name="habilidad" type="text" placeholder="" class="input-md">
+                                        <button class="btn btn-success btn-number" id="addHabilidad" type="button" style="display: inline-block;">
+                                            <i class="icon-line-circle-plus"></i>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+
+                                    <label class="col-md-4 control-label" for="tecnologia">Tecnologias</label>
+                                    <div class="col-md-4">
+                                        <input id="tecnologia" name="tecnologia" type="text" placeholder="" class="input-md">
+                                        <button class="btn btn-success btn-number" id="addTecnologia" type="button" style="display: inline-block;">
+                                            <i class="icon-line-circle-plus"></i>
+                                        </button>
+                                    </div>
+                                    <br>
+                                    <br>
+
+
+                                    <label class="col-md-4 control-label" for="idiomas">Idiomas</label>
+                                    <div class="col-md-4">
+                                          <input id="idiomas" name="idiomas" type="text" placeholder="" class="typeahead tt-input">
+                                          <button class="btn btn-success btn-number" id="addIdioma" type="button" style="display: inline-block;">
+                                              <i class="icon-line-circle-plus"></i>
+                                          </button>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <label class="col-md-4 control-label" for="buscar"></label>
+                                </div>
+                                <!--Col half end-->
+                                <div class="col_half col_last">
+                                  <h4>Consulta</h4>
+                                  <div id="nombresConsulta"></div>
+                                  <div id="dniConsulta" style="margin-top: 1%;"></div>
+                                  <div id="empresasConsulta" style="margin-top: 1%;"></div>
+                                  <div id="direccionesConsulta" style="margin-top: 1%;"></div>
+                                  <div id="habilidadesConsulta" style="margin-top: 1%;"></div>
+                                  <div id="tecnologiasConsulta" style="margin-top: 1%;"></div>
+                                  <div id="idiomasConsulta" style="margin-top: 1%;"></div>
+
+                                </div>
+                                <div class="col_full">
+                                    <!--<button id="buscarAhora" name="buscarp" class="btn btn-primary center-block">Iniciar búsqueda</button>-->
+                                    <a id="buscarAhora" name="buscarp" class="button button-xlarge tright">Iniciar búsqueda<i class="icon-circle-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="panelBusquedas" class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="contenidoBusqueda"></div>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- #panelBusquedas end-->
+
+                </div>
+
+            </div>
+
+        </section>
+        <!-- #content end -->
+
+    </div>
+    <!-- #wrapper end -->
+    <div id="seccionError"></div>
+
+    <!-- JavaScripts externos
+	============================================= -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/plugins.js"></script>
+    <script type="text/javascript" src="js/busqueda.js"></script>
+
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script type="text/javascript" src="js/functions.js"></script>
+
+</body>
+
+</html>
