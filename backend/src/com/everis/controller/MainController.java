@@ -49,7 +49,7 @@ public class MainController {
 	// CLASE DE PRUEBA
 	@RequestMapping(value = "/buscadorDinamico/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String searchCvDinamico(HttpServletResponse response, @PathVariable("id") String[] id,
+	public @ResponseBody String searchCvDinamico(HttpServletResponse response, @PathVariable("id") String id,
 			@RequestParam(value = "nombre") String[] nombre, @RequestParam(value = "direccion") String[] direccion,
 			@RequestParam(value = "dni") String[] dni, @RequestParam(value = "tecnologia") String[] tecnologia,
 			@RequestParam(value = "estudios") String[] estudios, @RequestParam(value = "empresa") String[] empresa,
@@ -63,17 +63,18 @@ public class MainController {
 		Gson gsonSearchList = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
 		StringBuilder processOutput = new StringBuilder();
-		
-		//Head de la query
+
+		// Head de la query
 		StringBuilder query = new StringBuilder();
 		query.append("{");
 		query.append("\"query\": {");
 		query.append("\"bool\": {");
 		query.append("\"should\": [");
-		
-		//Rompemos los arrays recibidos y generamos las distintas partes de la query
+
+		// Rompemos los arrays recibidos y generamos las distintas partes de la
+		// query
 		// Query de nombres
-		for (String a : nombre){
+		for (String a : nombre) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Datos Personales\": \"" + a + "\"");
@@ -81,82 +82,82 @@ public class MainController {
 			query.append("},");
 		}
 		// Query de formación
-		for (String b : direccion){
+		for (String b : direccion) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Datos Personales\": \"" + b + "\"");
 			query.append("}");
 			query.append("},");
 		}
-		
-		for (String c : dni){
+
+		for (String c : dni) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Datos Personales\": \"" + c + "\"");
 			query.append("}");
 			query.append("},");
 		}
-		
-		for (String d : tecnologia){
+
+		for (String d : tecnologia) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Experiencia Laboral\": \"" + d + "\"");
 			query.append("}");
 			query.append("},");
-			
+
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Formacion\": \"" + d + "\"");
 			query.append("}");
 			query.append("},");
 		}
-		
-		for (String e : estudios){
+
+		for (String e : estudios) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Experiencia Laboral\": \"" + e + "\"");
 			query.append("}");
 			query.append("},");
-			
+
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Formacion\": \"" + e + "\"");
 			query.append("}");
 			query.append("},");
 		}
-		
-		for (String e : empresa){
+
+		for (String e : empresa) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Experiencia Laboral\": \"" + e + "\"");
 			query.append("}");
 			query.append("},");
 		}
-		
-		for (String i : idiomas){
+
+		for (String i : idiomas) {
 			query.append("{");
 			query.append("\"match\": {");
 			query.append("\"Idiomas\": \"" + i + "\"");
 			query.append("}");
 			query.append("},");
 		}
-		
-		query.setLength(Math.max(query.length() - 1, 0)); //Borramos la ultima coma para encajar con el json bien formado
-		
+
+		query.setLength(Math.max(query.length() - 1, 0)); // Borramos la ultima
+															// coma para encajar
+															// con el json bien
+															// formado
+
 		// footer del json
 		query.append("]}}}");
-		
-		Gson gsonQuery = new GsonBuilder().setPrettyPrinting().create();
-		String jsonQuery = gsonQuery.toJson(query);
-		
-		System.out.println(query);
 
 		if (id.equals("all")) {
-			System.out.println("Consulta: " + query);
+			System.out.println("Consulta: " + query.toString());
+
+			// Se arma el proceso que se va a ejecutar en el servidor
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET",
-					"http://51.255.202.84:9200/concurrente/cv/_search", "-d", jsonQuery);
+					"http://51.255.202.84:9200/concurrente/cv/_search", "-d", query.toString());
 
 			processBuilder.redirectErrorStream(true);
 			Process process = processBuilder.start();
@@ -192,7 +193,7 @@ public class MainController {
 
 			JsonObject idObjString = object.getAsJsonObject();
 			String idCv = idObjString.get("_id").getAsString();
-			int idScore = idObjString.get("_score").getAsInt();
+			String idScore = idObjString.get("_score").getAsString();
 
 			// Creamos el objeto search para almacenar la informacion de la
 			// busqueda
@@ -297,7 +298,7 @@ public class MainController {
 
 			JsonObject idObjString = object.getAsJsonObject();
 			String idCv = idObjString.get("_id").getAsString();
-			int idScore = idObjString.get("_score").getAsInt();
+			String idScore = idObjString.get("_score").getAsString();
 
 			// Creamos el objeto search para almacenar la informacion de la
 			// busqueda
