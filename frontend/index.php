@@ -4,7 +4,7 @@
 <head>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="author" content="SemiColonWeb" />
+	<meta name="author" content="jdecastroc" />
 
 	<!-- Stylesheets
 	============================================= -->
@@ -29,6 +29,36 @@
 
 </head>
 
+<?php
+	session_start();
+  $lang = "es";
+	$allowed = false;
+	if (isset($_POST['usuario']) && isset($_POST['password'])){
+		$usuario = $_POST['usuario'];
+		$password = $_POST['password'];
+		$_SESSION["usuario"] = $usuario;
+		$_SESSION["password"] = $password;
+	}
+  if(isset($_SESSION["usuario"]) && isset($_SESSION["password"]))
+  {
+			$usuario = $_SESSION["usuario"];
+			$password = $_SESSION["password"];
+			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+
+			$query = "SELECT * FROM usuarios";
+			$result = mysqli_query($db, $query);
+			while ($row = mysqli_fetch_array($result)) {
+				if (($usuario == $row['nombre']) && ($password ==  $row['password'])){
+					$allowed = true;
+					$nombre_db = $row['nombre'];
+					$password_db = $row['password'];
+					$permisos_db = $row['permisos'];
+					$_SESSION["permisos"] = $permisos_db;
+				}
+			}
+  }
+?>
+
 <body class="stretched side-header">
 
 	<!-- Document Wrapper
@@ -48,19 +78,24 @@
 					<!-- Logo
 					============================================= -->
 					<div id="logo" class="nobottomborder">
-						<a href="index.html" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
+						<a href="index.php" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
 					</div><!-- #logo end -->
 
 					<!-- Primary Navigation
 					============================================= -->
 					<nav id="primary-menu">
 						<ul>
-							<li class="current"><a href="index.html"><div>Índice</div></a></li>
-							<li><a href="gestor.html"><div>Gestión de repositorio</div></a></li>
-							<li><a href="buscador.html"><div>Búsqueda de CV</div></a></li>
-							<li><a href="#"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
+							<li class="current"><a href="index.php"><div>Índice</div></a></li>
+							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
+							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
+
+							<?php
+								if ($allowed && $permisos_db == "administrador") {
+							?>
+							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
               <br><br>
+							<?php } ?>
               <li><a href="index.html"><div>Ayuda</div></a></li>
               <li><a href="index.html"><div>Contacto</div></a></li>
 						</ul>
@@ -82,6 +117,7 @@
 
 		<!-- Content
 		============================================= -->
+
 		<section id="content">
 
 			<div class="content-wrap">
@@ -93,7 +129,12 @@
 					</div>
 				</div>
 
+
+
 				<div class="container clearfix">
+					<?php
+						if ($allowed) {
+					?>
           <div class="widget clearfix">
             <div class="row">
               <div class="col_half bottommargin-sm">
@@ -122,12 +163,25 @@
   						</ul>
 						</div>
 					</div>
-
+					<?php
+				} else {
+					?>
+					<div class="col_full">
+						<div>
+							<h3>Usuario incorrecto</h3>
+							<p>Usted no tiene acceso para ver esta página. Vuelva a la pantalla de acceso para entrar con el usuario proporcionado por el administrador del sistema.</p>
+						</div>
+					</div>
+					<?php
+					}
+					?>
 				</div>
+
 
 			</div>
 
 		</section><!-- #content end -->
+
 
 	</div><!-- #wrapper end -->
 

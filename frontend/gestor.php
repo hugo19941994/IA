@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="author" content="SemiColonWeb" />
+    <meta name="author" content="jdecastroc" />
 
     <!-- Stylesheets
 	============================================= -->
@@ -22,71 +22,82 @@
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 	<![endif]-->
 
-    <title>Everis - Gestió de repositorio</title>
+    <title>Everis - Gestión de repositorio</title>
 
 </head>
 
+<?php
+	session_start();
+  $lang = "es";
+	$allowed = false;
+  if(isset($_SESSION["usuario"]) && isset($_SESSION["password"]))
+  {
+      $usuario = $_SESSION["usuario"];
+      $password = $_SESSION["password"];
+			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+
+			$query = "SELECT * FROM usuarios";
+			$result = mysqli_query($db, $query);
+			while ($row = mysqli_fetch_array($result)) {
+				if (($usuario == $row['nombre']) && ($password ==  $row['password'])){
+					$allowed = true;
+					$nombre_db = $row['nombre'];
+					$password_db = $row['password'];
+					$permisos_db = $row['permisos'];
+				}
+			}
+  }
+?>
+
 <body class="stretched side-header">
     <div id="wrapper" class="clearfix">
-        <header id="header" class="no-sticky">
-            <div id="header-wrap">
-                <div class="container clearfix">
-                    <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
-                    <div id="logo" class="nobottomborder">
-                        <a href="index.html" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
-                    </div>
-                    <nav id="primary-menu">
-                        <ul>
-                            <li>
-                                <a href="index.html">
-                                    <div>Índice</div>
-                                </a>
-                            </li>
-                            <li class="current">
-                                <a href="gestor.html">
-                                    <div>Gestión de repositorio</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="buscador.html">
-                                    <div>Búsqueda de CV</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <div>Gestión de usuarios</div>
-                                </a>
-                                <!-- Solo para administradores-->
-                            </li>
-                            <br>
-                            <br>
-                            <li>
-                                <a href="index.html">
-                                    <div>Ayuda</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html">
-                                    <div>Contacto</div>
-                                </a>
-                            </li>
-                        </ul>
+      <header id="header" class="no-sticky">
 
-                    </nav>
-                    <!-- #primary-menu end -->
+        <div id="header-wrap">
 
-                    <div class="clearfix visible-md visible-lg">
-                        <a href="#" class="social-icon si-small si-borderless si-github">
-                            <i class="icon-github"></i>
-                            <i class="icon-github"></i>
-                        </a>
-                    </div>
+          <div class="container clearfix">
 
-                </div>
+            <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
+            <!-- Logo
+            ============================================= -->
+            <div id="logo" class="nobottomborder">
+              <a href="index.php" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
+            </div><!-- #logo end -->
+
+            <!-- Primary Navigation
+            ============================================= -->
+            <nav id="primary-menu">
+              <ul>
+                <li><a href="index.php"><div>Índice</div></a></li>
+                <li class="current"><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
+                <li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
+
+                <?php
+                  if ($allowed && $permisos_db == "administrador") {
+                ?>
+                <li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
+                </li>
+                <br><br>
+                <?php } ?>
+                <li><a href="index.html"><div>Ayuda</div></a></li>
+                <li><a href="index.html"><div>Contacto</div></a></li>
+              </ul>
+
+            </nav><!-- #primary-menu end -->
+
+            <div class="clearfix visible-md visible-lg">
+              <a href="#" class="social-icon si-small si-borderless si-github">
+                <i class="icon-github"></i>
+                <i class="icon-github"></i>
+              </a>
             </div>
 
-        </header>
+          </div>
+
+        </div>
+
+      </header><!-- #header end -->
         <!-- #header end -->
 
         <!-- Content
@@ -104,6 +115,9 @@
 
                 <div class="container clearfix">
 
+                  <?php
+                    if ($allowed) {
+                  ?>
                     <div class="col_half">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -149,7 +163,7 @@
                                 <p>Introduzca el ID del Curriculum que desea eliminar del repositorio</p>
                                 <fieldset>
                                     <div class="input-group image-preview">
-                                        <input type="text" class="form-control image-preview-filename">
+                                        <input id="idCvBorrar"type="text" class="form-control image-preview-filename">
                                         <span class="input-group-btn">
                               <button id="borrarCV" class="btn btn-default image-preview-input" type="button" data-toggle="modal" data-target="#myModal">Borrar</button>
 
@@ -187,7 +201,18 @@
             </div>
     </div>
     </div>
-
+    <?php
+  } else {
+    ?>
+    <div class="col_full">
+      <div>
+        <h3>Usuario incorrecto</h3>
+        <p>Usted no tiene acceso para ver esta página. Vuelva a la pantalla de acceso para entrar con el usuario proporcionado por el administrador del sistema.</p>
+      </div>
+    </div>
+    <?php
+    }
+    ?>
     </div>
     </div>
 
@@ -201,12 +226,13 @@
 
     </div>
     <!-- #wrapper end -->
-    <div id="seccionError"></div>
+    <div id="seccionExito"></div>
 
     <!-- JavaScripts externos
 	============================================= -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/plugins.js"></script>
+    <script type="text/javascript" src="js/gestor.js"></script>
 
 
     <!-- Footer Scripts

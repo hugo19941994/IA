@@ -3,7 +3,7 @@
 <head>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="author" content="SemiColonWeb" />
+	<meta name="author" content="jdecastroc" />
 
 	<!-- Stylesheets
 	============================================= -->
@@ -23,7 +23,7 @@
 
 	<!-- Document Title
 	============================================= -->
-	<title>Login - Layout 4 | Canvas</title>
+	<title>Everis - Login Repositorio de curriculums</title>
 
 </head>
 
@@ -50,22 +50,22 @@
 
 						<div class="panel panel-default divcenter noradius noborder" style="max-width: 400px;">
 							<div class="panel-body" style="padding: 40px;">
-								<form id="login-form" name="login-form" class="nobottommargin" action="#" method="post">
+								<form id="login-form" name="login-form" class="nobottommargin" action="index.php" method="post">
 									<h3>Conectate a tu cuenta</h3>
 
 									<div class="col_full">
 										<label for="login-form-username">Usuario:</label>
-										<input type="text" id="login-form-username" name="login-form-username" value="" class="form-control not-dark" />
+										<input type="text" id="usuario" name="usuario" value="" class="form-control not-dark" />
 									</div>
 
 									<div class="col_full">
 										<label for="login-form-password">Contraseña:</label>
-										<input type="password" id="login-form-password" name="login-form-password" value="" class="form-control not-dark" />
+										<input type="password" id="password" name="password" value="" class="form-control not-dark" />
 									</div>
 
 									<div class="col_full nobottommargin">
-										<!--<button class="button button-3d nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>-->
-                    <a id="login-form-submit" href="index.html" name="login-form-submit" value="login" class="button button-3d nomargin">Login</a>
+										<button class="button button-3d nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+                    <!--<a id="login-form-submit" name="login-form-submit" value="submit" class="button button-3d nomargin">Login</a>-->
 										<a href="#" class="fright">¿Olvidaste tu contraseña?</a>
 									</div>
 								</form>

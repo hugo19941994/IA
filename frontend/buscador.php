@@ -2,7 +2,7 @@
 <html dir="ltr" lang="es">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="author" content="SemiColonWeb" />
+    <meta name="author" content="jdecastroc" />
 
     <!-- Stylesheets
 	============================================= -->
@@ -27,83 +27,80 @@
 
 </head>
 
+<?php
+	session_start();
+  $lang = "es";
+	$allowed = false;
+  if(isset($_SESSION["usuario"]) && isset($_SESSION["password"]))
+  {
+      $usuario = $_SESSION["usuario"];
+      $password = $_SESSION["password"];
+			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+
+			$query = "SELECT * FROM usuarios";
+			$result = mysqli_query($db, $query);
+			while ($row = mysqli_fetch_array($result)) {
+				if (($usuario == $row['nombre']) && ($password ==  $row['password'])){
+					$allowed = true;
+					$nombre_db = $row['nombre'];
+					$password_db = $row['password'];
+					$permisos_db = $row['permisos'];
+				}
+			}
+  }
+?>
+
 <body class="stretched side-header">
 
-    <!-- Document Wrapper
-	============================================= -->
     <div id="wrapper" class="clearfix">
 
-        <!-- Header
-		============================================= -->
-        <header id="header" class="no-sticky">
+      <header id="header" class="no-sticky">
 
-            <div id="header-wrap">
+        <div id="header-wrap">
 
-                <div class="container clearfix">
+          <div class="container clearfix">
 
-                    <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+            <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
-                    <!-- Logo
-					============================================= -->
-                    <div id="logo" class="nobottomborder">
-                        <a href="index.html" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
-                    </div>
-                    <!-- #logo end -->
+            <!-- Logo
+            ============================================= -->
+            <div id="logo" class="nobottomborder">
+              <a href="index.php" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
+            </div><!-- #logo end -->
 
-                    <!-- Primary Navigation
-					============================================= -->
-                    <nav id="primary-menu">
-                        <ul>
-                            <li>
-                                <a href="index.html">
-                                    <div>Índice</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="gestor.html">
-                                    <div>Gestión de repositorio</div>
-                                </a>
-                            </li>
-                            <li class="current">
-                                <a href="buscador.html">
-                                    <div>Búsqueda de CV</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <div>Gestión de usuarios</div>
-                                </a>
-                                <!-- Solo para administradores-->
-                            </li>
-                            <br>
-                            <br>
-                            <li>
-                                <a href="index.html">
-                                    <div>Ayuda</div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html">
-                                    <div>Contacto</div>
-                                </a>
-                            </li>
-                        </ul>
+            <!-- Primary Navigation
+            ============================================= -->
+            <nav id="primary-menu">
+              <ul>
+                <li><a href="index.php"><div>Índice</div></a></li>
+                <li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
+                <li class="current"><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
 
-                    </nav>
-                    <!-- #primary-menu end -->
+                <?php
+                  if ($allowed && $permisos_db == "administrador") {
+                ?>
+                <li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
+                </li>
+                <br><br>
+                <?php } ?>
+                <li><a href="index.html"><div>Ayuda</div></a></li>
+                <li><a href="index.html"><div>Contacto</div></a></li>
+              </ul>
 
-                    <div class="clearfix visible-md visible-lg">
-                        <a href="#" class="social-icon si-small si-borderless si-github">
-                            <i class="icon-github"></i>
-                            <i class="icon-github"></i>
-                        </a>
-                    </div>
+            </nav><!-- #primary-menu end -->
 
-                </div>
-
+            <div class="clearfix visible-md visible-lg">
+              <a href="#" class="social-icon si-small si-borderless si-github">
+                <i class="icon-github"></i>
+                <i class="icon-github"></i>
+              </a>
             </div>
 
-        </header>
+          </div>
+
+        </div>
+
+      </header><!-- #header end -->
         <!-- #header end -->
 
         <!-- Content
@@ -120,6 +117,9 @@
                 </div>
 
                 <div class="container clearfix">
+                  <?php
+          					if ($allowed) {
+          				?>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="panel-title text-center">Busqueda de Curriculums</div>
@@ -178,7 +178,7 @@
                                     <br>
 
 
-                                    <label class="col-md-4 control-label" for="tecnologia">Habilidades</label>
+                                    <label class="col-md-4 control-label" for="tecnologia">Estudios</label>
                                     <div class="col-md-4">
                                         <input id="habilidad" name="habilidad" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addHabilidad" type="button" style="display: inline-block;">
@@ -238,8 +238,20 @@
                         </div>
                     </div>
                     <!-- #panelBusquedas end-->
-
+                    <?php
+            			} else {
+            				?>
+            				<div class="col_full">
+            					<div>
+            						<h3>Usuario incorrecto</h3>
+            						<p>Usted no tiene acceso para ver esta página. Vuelva a la pantalla de acceso para entrar con el usuario proporcionado por el administrador del sistema.</p>
+            					</div>
+            				</div>
+            				<?php
+            				}
+            				?>
                 </div>
+
 
             </div>
 
