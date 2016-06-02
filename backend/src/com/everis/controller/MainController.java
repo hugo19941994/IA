@@ -9,13 +9,22 @@
  */
 package com.everis.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.*;
-
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.exec.*;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,16 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.apache.commons.exec.*;
 
 /**
  * La clase MainController es el controlador REST. Se encarga entonces de
@@ -384,13 +383,27 @@ public class MainController {
 
 		response.setHeader("Access-Control-Allow-Origin", "*");
 
-		// TODO Add within pdf return content type HTML and DOC. Check it with
-		// regex.
-		ClassPathResource pdfFile = new ClassPathResource("cvReal/" + fileName + ".pdf");
+		String rootPath = System.getProperty("user.dir"); // Current
+		File dir = new File(rootPath + File.separator + "src" + File.separator + "main" + File.separator
+				            + "resources" + File.separator + "cvReal");
+        File listOfFile[] = dir.listFiles();
 
-		return ResponseEntity.ok().contentLength(pdfFile.contentLength())
-				.contentType(MediaType.parseMediaType("application/pdf"))
-				.body(new InputStreamResource(pdfFile.getInputStream()));
+        for(File f : listOfFile) {
+            System.out.println(f.getName());
+            System.out.println(fileName);
+            System.out.println(FilenameUtils.getBaseName(f.getName()));
+            if (FilenameUtils.getBaseName(f.getName()).equals(fileName)) {
+                System.out.println("equals");
+                FileSystemResource ff = new FileSystemResource(f);
+                String mediaType = FilenameUtils.getExtension(f.getName()).equals("pdf") ? "application/pdf" : "application/force-download";
+                return ResponseEntity.ok().contentLength(ff.contentLength())
+                        .contentType(MediaType.parseMediaType(mediaType))
+                        .header("content-disposition", "attachment; filename=" + f.getName())
+                        .body(new InputStreamResource(ff.getInputStream()));
+            }
+        }
+		System.out.println("File not found");
+        return null;
 	}
 
 	@RequestMapping(value = "/borrar/{id}", method = RequestMethod.DELETE)
