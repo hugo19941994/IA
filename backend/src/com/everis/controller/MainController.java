@@ -76,7 +76,7 @@ public class MainController {
 		for (String a : nombre){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Datos Personales\": " + a);
+			query.append("\"Datos Personales\": \"" + a + "\"");
 			query.append("}");
 			query.append("},");
 		}
@@ -84,7 +84,7 @@ public class MainController {
 		for (String b : direccion){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Datos Personales\": " + b);
+			query.append("\"Datos Personales\": \"" + b + "\"");
 			query.append("}");
 			query.append("},");
 		}
@@ -92,7 +92,7 @@ public class MainController {
 		for (String c : dni){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Datos Personales\": " + c);
+			query.append("\"Datos Personales\": \"" + c + "\"");
 			query.append("}");
 			query.append("},");
 		}
@@ -100,13 +100,13 @@ public class MainController {
 		for (String d : tecnologia){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Experiencia Laboral\": " + d);
+			query.append("\"Experiencia Laboral\": \"" + d + "\"");
 			query.append("}");
 			query.append("},");
 			
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Formacion\": " + d);
+			query.append("\"Formacion\": \"" + d + "\"");
 			query.append("}");
 			query.append("},");
 		}
@@ -114,13 +114,13 @@ public class MainController {
 		for (String e : estudios){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Experiencia Laboral\": " + e);
+			query.append("\"Experiencia Laboral\": \"" + e + "\"");
 			query.append("}");
 			query.append("},");
 			
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Formacion\": " + e);
+			query.append("\"Formacion\": \"" + e + "\"");
 			query.append("}");
 			query.append("},");
 		}
@@ -128,18 +128,19 @@ public class MainController {
 		for (String e : empresa){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Experiencia Laboral\": " + e);
+			query.append("\"Experiencia Laboral\": \"" + e + "\"");
 			query.append("}");
 			query.append("},");
 		}
 		
-		for (String e : idiomas){
+		for (String i : idiomas){
 			query.append("{");
 			query.append("\"match\": {");
-			query.append("\"Idiomas\": " + e);
+			query.append("\"Idiomas\": \"" + i + "\"");
 			query.append("}");
 			query.append("},");
 		}
+		
 		query.setLength(Math.max(query.length() - 1, 0)); //Borramos la ultima coma para encajar con el json bien formado
 		
 		// footer del json
