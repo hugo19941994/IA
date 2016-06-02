@@ -11,6 +11,7 @@ package com.everis.controller;
 public class SearchObject {
 
 	private String curriculumId;
+	private int curriculumScore;
 	private String downloadCvLink;
 	private String parsedCvLink;
 
@@ -26,8 +27,9 @@ public class SearchObject {
 	 *            -> enlace al json indexado en el elasticSearch del curriculum
 	 *            del match
 	 */
-	public SearchObject(String id, String downloadLink, String parsedLink) {
+	public SearchObject(String id, int score, String downloadLink, String parsedLink) {
 		this.setCurriculumId(id);
+		this.setCurriculumScore(score);
 		this.setDownloadCvLink(downloadLink);
 		this.setParsedCvLink(parsedLink);
 	}
@@ -39,6 +41,15 @@ public class SearchObject {
 	 */
 	public String getCurriculumId() {
 		return curriculumId;
+	}
+	
+	/**
+	 * getCurriculumScore devuelve el score del hit para comprobar el grado de match del hit
+	 * 
+	 * @return string con el score del match
+	 */
+	public int getCurriculumScore() {
+		return curriculumScore;
 	}
 
 	/**
@@ -66,6 +77,15 @@ public class SearchObject {
 	 */
 	public void setCurriculumId(String curriculumId) {
 		this.curriculumId = curriculumId;
+	}
+	
+	/**
+	 * setCurriculumId Fija el score del curriculum del match
+	 * 
+	 * @param curriculumScore -> score del curriculum del match
+	 */
+	public void setCurriculumScore(int score) {
+		this.curriculumScore = score;
 	}
 
 	/**

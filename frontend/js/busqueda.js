@@ -288,12 +288,13 @@ $(document).ready(function() {
             type: 'GET',
             url: 'http://51.255.202.84:8080/buscador/all',
             data: {
-                nombre: elementosFormulario.nombre.val(),
-                dni: elementosFormulario.dni.val(),
-                empresa: elementosFormulario.empresa.val(),
-                direccion: elementosFormulario.direccion.val(),
-                tecnologia: elementosFormulario.tecnologia.val(),
-                idiomas: elementosFormulario.idioma.val(),
+                nombre: listado.nombres,
+                dni: listado.dni,
+                empresa: listado.empresa,
+                direccion: listado.direccion,
+                tecnologia: listado.tecnologia,
+                estudios: listado.habilidad,
+                idiomas: listado.idioma,
             }, //Especifica los datos que se enviarán al servidor
             async: true, //Cuidado con el true! esto es asíncrono puede generar problemas con otros fragmentos de código. Hace que el código se ejecute de manera concurrente
             beforeSend: function(xhr) {
@@ -316,7 +317,7 @@ $(document).ready(function() {
                         output += '<td>' + data.searchVector[j].curriculumId + '</td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="curriculum.html?id=' + data.searchVector[j].curriculumId + '" class="btn btn-info" role="button">Visualizar</a></td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="' + data.searchVector[j].downloadCvLink + '" class="btn btn-info" role="button">Descargar</a></td>';
-                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Borrar</a></td>';
+                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Score: ' + data.searchVector[j].curriculumScore + '</a></td>';
                         output += '</tr>'
                     }
 
