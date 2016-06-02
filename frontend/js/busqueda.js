@@ -284,17 +284,62 @@ $(document).ready(function() {
         elementos.contenedorOpcional.show();
         elementos.panelBusquedas.show();
 
+        //Deserializacion de arrays
+
+        var getNombres = "";
+        for (var n in listado.nombres) {
+          getNombres += listado.nombres[n] + ",";
+        }
+        getNombres = getNombres.slice(0, -1);
+
+        var getDni = "";
+        for (var p in listado.dni) {
+          getDni += listado.dni[p] + ",";
+        }
+        getDni = getDni.slice(0, -1);
+
+        var getEmpresas = "";
+        for (var e in listado.empresas) {
+          getEmpresas += listado.empresas[e] + ",";
+        }
+        getEmpresas = getEmpresas.slice(0, -1);
+
+        var getDirecciones = "";
+        for (var e in listado.direcciones) {
+          getDirecciones+= listado.direcciones[e] + ",";
+        }
+        getDirecciones = getDirecciones.slice(0, -1);
+
+        var getTecnologias = "";
+        for (var e in listado.tecnologias) {
+          getTecnologias+= listado.tecnologias[e] + ",";
+        }
+        getTecnologias = getTecnologias.slice(0, -1);
+
+        var getHabilidades = "";
+        for (var e in listado.habilidades) { //MALLLLL ES HABILIDADES
+          getHabilidades+= listado.habilidades[e] + ",";
+        }
+        getHabilidades = getHabilidades.slice(0, -1);
+
+        var getIdiomas = "";
+        for (var e in listado.idiomas) { //MALLLLL ES HABILIDADES
+          getIdiomas+= listado.idiomas[e] + ",";
+        }
+        getIdiomas = getIdiomas.slice(0, -1);
+
+
         $.ajax({
             type: 'GET',
-            url: 'http://51.255.202.84:8080/buscador/all',
+            url: 'http://51.255.202.84:8085/buscador/all',
             data: {
-                nombre: listado.nombres,
-                dni: listado.dni,
-                empresa: listado.empresa,
-                direccion: listado.direccion,
-                tecnologia: listado.tecnologia,
-                estudios: listado.habilidad,
-                idiomas: listado.idioma,
+                nombre: getNombres,
+                dni: getDni,
+                empresa: getEmpresas,
+                direccion: getDirecciones,
+                tecnologia: getTecnologias,
+                estudios: getHabilidades,
+                idiomas: getIdiomas
             }, //Especifica los datos que se enviarán al servidor
             async: true, //Cuidado con el true! esto es asíncrono puede generar problemas con otros fragmentos de código. Hace que el código se ejecute de manera concurrente
             beforeSend: function(xhr) {
@@ -317,7 +362,7 @@ $(document).ready(function() {
                         output += '<td>' + data.searchVector[j].curriculumId + '</td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="curriculum.html?id=' + data.searchVector[j].curriculumId + '" class="btn btn-info" role="button">Visualizar</a></td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="' + data.searchVector[j].downloadCvLink + '" class="btn btn-info" role="button">Descargar</a></td>';
-                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Score: ' + data.searchVector[j].curriculumScore + '</a></td>';
+                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Score: ' + data.searchVector[j].curriculumScore*100 + '</a></td>';
                         output += '</tr>'
                     }
 
