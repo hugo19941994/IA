@@ -22,7 +22,7 @@
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 	<![endif]-->
 
-    <title>Everis - Gestió de repositorio</title>
+    <title>Everis - Gestión de repositorio</title>
 
 </head>
 
@@ -117,17 +117,17 @@
                                 <form class="form-horizontal">
                                     <fieldset>
                                         <div class="input-group image-preview">
-                                            <input type="text" class="form-control image-preview-filename" disabled="disabled">
+                                            <input type="file" id="file" name="document" class="findDocumentOnboarding" multiple/>
+                                            <input type="button" id="upload-button" class="uploadDocumentOnboarding" value="Subir"/>
                                             <!-- don't give a name === doesn't send on POST/GET -->
-                                            <span class="input-group-btn">
+                                            <!--<span class="input-group-btn">-->
                               <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
                                   <span class="glyphicon glyphicon-remove"></span> Borrar
                                             </button>
-                                            <div class="btn btn-default image-preview-input">
+                                            <!--<div class="btn btn-default image-preview-input">
                                                 <span class="image-preview-input-title">Buscar</span>
                                                 <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" />
-                                                <!-- rename it -->
-                                            </div>
+                                            </div>-->
                                             </span>
                                         </div>
                                     </fieldset>
@@ -212,6 +212,7 @@
     <!-- Footer Scripts
 	============================================= -->
     <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/upload.js"></script>
 
 </body>
 
