@@ -135,8 +135,8 @@
 
                                 <div class="col_half">
                                     <h4>Parámetros de búsqueda</h4>
-                                    <label class="col-md-4 control-label" for="nombre">Nombre</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="nombre">Nombre</label>
+                                    <div class="col-md-6">
                                         <input id="nombre" name="nombre" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addNombre" type="button" style="display: inline-block;">
                                             <i class="icon-line-circle-plus"></i>
@@ -145,8 +145,8 @@
                                     <br>
                                     <br>
 
-                                    <label class="col-md-4 control-label" for="dni">DNI</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="dni">DNI</label>
+                                    <div class="col-md-6">
                                         <input id="dni" name="dni" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addDNI" type="button" style="display: inline-block;">
                                             <i class="icon-line-circle-plus"></i>
@@ -156,8 +156,8 @@
                                     <br>
 
 
-                                    <label class="col-md-4 control-label" for="empresa">Empresa</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="empresa">Empresa</label>
+                                    <div class="col-md-6">
                                         <input id="empresa" name="empresa" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addEmpresa" type="button" style="display: inline-block;">
                                             <i class="icon-line-circle-plus"></i>
@@ -167,8 +167,8 @@
                                     <br>
 
 
-                                    <label class="col-md-4 control-label" for="direccion">Dirección</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="direccion">Dirección</label>
+                                    <div class="col-md-6">
                                         <input id="direccion" name="direccion" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addDireccion" type="button" style="display: inline-block;">
                                             <i class="icon-line-circle-plus"></i>
@@ -178,8 +178,8 @@
                                     <br>
 
 
-                                    <label class="col-md-4 control-label" for="tecnologia">Estudios</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="tecnologia">Estudios</label>
+                                    <div class="col-md-6">
                                         <input id="habilidad" name="habilidad" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addHabilidad" type="button" style="display: inline-block;">
                                             <i class="icon-line-circle-plus"></i>
@@ -188,8 +188,8 @@
                                     <br>
                                     <br>
 
-                                    <label class="col-md-4 control-label" for="tecnologia">Tecnologias</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="tecnologia">Tecnologias</label>
+                                    <div class="col-md-6">
                                         <input id="tecnologia" name="tecnologia" type="text" placeholder="" class="input-md">
                                         <button class="btn btn-success btn-number" id="addTecnologia" type="button" style="display: inline-block;">
                                             <i class="icon-line-circle-plus"></i>
@@ -199,8 +199,8 @@
                                     <br>
 
 
-                                    <label class="col-md-4 control-label" for="idiomas">Idiomas</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-6 control-label" for="idiomas">Idiomas</label>
+                                    <div class="col-md-6">
                                           <input id="idiomas" name="idiomas" type="text" placeholder="" class="typeahead tt-input">
                                           <button class="btn btn-success btn-number" id="addIdioma" type="button" style="display: inline-block;">
                                               <i class="icon-line-circle-plus"></i>
