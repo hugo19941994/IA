@@ -156,7 +156,7 @@ public class MainController {
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET",
-					"http://51.255.202.84:9200/concurrente/cv/_search", "-d", query.toString());
+					"http://hugofs.com:9200/concurrente/cv/_search", "-d", query.toString());
 
 			processBuilder.redirectErrorStream(true);
 			Process process = processBuilder.start();
@@ -261,7 +261,7 @@ public class MainController {
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET",
-					"http://51.255.202.84:9200/concurrente/cv/_search", "-d", query);
+					"http://hugofs.com:9200/concurrente/cv/_search", "-d", query);
 
 			processBuilder.redirectErrorStream(true);
 			Process process = processBuilder.start();
@@ -332,10 +332,10 @@ public class MainController {
 
 		StringBuilder processOutput = new StringBuilder();
 
-		String address = "http://51.255.202.84:9200/concurrente/cv/" + id;
+		String address = "http://hugofs.com:9200/concurrente/cv/" + id;
 
 		if (!id.equals("")) {
-			System.out.println("Consulta: http://51.255.202.84:9200/concurrente/cv/" + id);
+			System.out.println("Consulta: http://hugofs.com:9200/concurrente/cv/" + id);
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET", address.trim());

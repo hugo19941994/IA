@@ -331,7 +331,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'GET',
-            url: 'http://51.255.202.84:8085/buscador/all',
+            url: 'http://hugofs.com:8080/buscador/all',
             data: {
                 nombre: getNombres,
                 dni: getDni,

@@ -7,7 +7,7 @@ $(document).ready(function() {
   $(document).on('click', '#borrarCv', function() {
     $.ajax({
         type: 'DELETE',
-        url: 'http://51.255.202.84:8085/borrar/' + idCvBorrar,
+        url: 'http://hugofs.com:8080/borrar/' + idCvBorrar,
         data: {
         }, //Especifica los datos que se enviarán al servidor
         async: true, //Cuidado con el true! esto es asíncrono puede generar problemas con otros fragmentos de código. Hace que el código se ejecute de manera concurrente
