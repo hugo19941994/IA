@@ -441,6 +441,7 @@ public class MainController {
 					dir.mkdirs();
 
 				// Create the file on server
+                name = name.replaceAll("\\s+","");
 				File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
 				stream.write(bytes);

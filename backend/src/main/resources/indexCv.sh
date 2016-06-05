@@ -37,14 +37,14 @@ fi
 
 for file in ./upload/*  # Check uploaded files
 do
-    if [ -e $file ]  # Check if file exists
+    if [ -e "$file" ]  # Check if file exists
     then
         # Get filename and extension
         filename=$(basename "$file")
         extension="${filename##*.}"
 
         # Parse file
-        (cd ../../../../parser; python main.py ../backend/src/main/resources/upload/$filename) & wait
+        (cd ../../../../parser; python main.py ../backend/src/main/resources/upload/"${filename}") & wait
 
         # Move parsed JSON
         mv /home/hfs/CV-Parser/parser/out/0.json "./cv/$COUNTER.json"
@@ -56,7 +56,7 @@ do
         curl -XPUT 'http://hugofs.com:9200/concurrente/cv/'$COUNTER -d "$DATA" -vn
 
         # Change filename to index
-        mv $file ./cvReal/$COUNTER.$extension
+        mv "$file" ./cvReal/$COUNTER.$extension
 
         # Increment counter
         COUNTER=$((++COUNTER))
