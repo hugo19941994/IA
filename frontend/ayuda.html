@@ -54,19 +54,14 @@
 					============================================= -->
 					<nav id="primary-menu">
 						<ul>
-							<li class="current"><a href="index.php"><div>Índice</div></a></li>
+							<li><a href="index.php"><div>Índice</div></a></li>
 							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
 							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
-
-							<?php
-								if ($allowed && $permisos_db == "administrador") {
-							?>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
-              <br><br>
-							<?php } ?>
-              <li><a href="ayuda.html"><div>Ayuda</div></a></li>
-              <li><a href="contacto.html"><div>Contacto</div></a></li>
+                            <br><br>
+                            <li class="current"><a href="ayuda.html"><div>Ayuda</div></a></li>
+                            <li><a href="contacto.html"><div>Contacto</div></a></li>
 						</ul>
 
 					</nav><!-- #primary-menu end -->
@@ -100,6 +95,7 @@
 					<div class="col_full">
 						<div>
 							<h3>Documentación</h3>
+                            <a href="http://hugofs.com:8080/swagger-ui.html">Swagger</a>
 						</div>
 					</div>
 					<div class="col_full">
