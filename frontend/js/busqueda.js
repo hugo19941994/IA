@@ -60,8 +60,8 @@ $(document).ready(function() {
                 listado.nombres.splice(i, 1);
             }
         }
-        if (listado.nombres.length === 0){
-          $('#nombresConsulta').empty();
+        if (listado.nombres.length === 0) {
+            $('#nombresConsulta').empty();
         }
         this.remove();
     });
@@ -92,8 +92,8 @@ $(document).ready(function() {
                 listado.dni.splice(i, 1);
             }
         }
-        if (listado.dni.length === 0){
-          $('#dniConsulta').empty();
+        if (listado.dni.length === 0) {
+            $('#dniConsulta').empty();
         }
         this.remove();
     });
@@ -124,8 +124,8 @@ $(document).ready(function() {
                 listado.empresas.splice(i, 1);
             }
         }
-        if (listado.empresas.length === 0){
-          $('#empresasConsulta').empty();
+        if (listado.empresas.length === 0) {
+            $('#empresasConsulta').empty();
         }
         this.remove();
     });
@@ -157,7 +157,7 @@ $(document).ready(function() {
             }
         }
         if (listado.direcciones.length === 0) {
-          $('#direccionesConsulta').empty();
+            $('#direccionesConsulta').empty();
         }
         this.remove();
     });
@@ -189,7 +189,7 @@ $(document).ready(function() {
             }
         }
         if (listado.habilidades.length === 0) {
-          $('#habilidadesConsulta').empty();
+            $('#habilidadesConsulta').empty();
         }
         this.remove();
     });
@@ -221,7 +221,7 @@ $(document).ready(function() {
             }
         }
         if (listado.tecnologias.length === 0) {
-          $('#tecnologiasConsulta').empty();
+            $('#tecnologiasConsulta').empty();
         }
         this.remove();
     });
@@ -253,7 +253,7 @@ $(document).ready(function() {
             }
         }
         if (listado.idiomas.length === 0) {
-          $('#idiomasConsulta').empty();
+            $('#idiomasConsulta').empty();
         }
         this.remove();
     });
@@ -288,43 +288,43 @@ $(document).ready(function() {
 
         var getNombres = "";
         for (var n in listado.nombres) {
-          getNombres += listado.nombres[n] + ",";
+            getNombres += listado.nombres[n] + ",";
         }
         getNombres = getNombres.slice(0, -1);
 
         var getDni = "";
         for (var p in listado.dni) {
-          getDni += listado.dni[p] + ",";
+            getDni += listado.dni[p] + ",";
         }
         getDni = getDni.slice(0, -1);
 
         var getEmpresas = "";
         for (var e in listado.empresas) {
-          getEmpresas += listado.empresas[e] + ",";
+            getEmpresas += listado.empresas[e] + ",";
         }
         getEmpresas = getEmpresas.slice(0, -1);
 
         var getDirecciones = "";
         for (var e in listado.direcciones) {
-          getDirecciones+= listado.direcciones[e] + ",";
+            getDirecciones += listado.direcciones[e] + ",";
         }
         getDirecciones = getDirecciones.slice(0, -1);
 
         var getTecnologias = "";
         for (var e in listado.tecnologias) {
-          getTecnologias+= listado.tecnologias[e] + ",";
+            getTecnologias += listado.tecnologias[e] + ",";
         }
         getTecnologias = getTecnologias.slice(0, -1);
 
         var getHabilidades = "";
         for (var e in listado.habilidades) { //MALLLLL ES HABILIDADES
-          getHabilidades+= listado.habilidades[e] + ",";
+            getHabilidades += listado.habilidades[e] + ",";
         }
         getHabilidades = getHabilidades.slice(0, -1);
 
         var getIdiomas = "";
         for (var e in listado.idiomas) { //MALLLLL ES HABILIDADES
-          getIdiomas+= listado.idiomas[e] + ",";
+            getIdiomas += listado.idiomas[e] + ",";
         }
         getIdiomas = getIdiomas.slice(0, -1);
 
@@ -363,7 +363,7 @@ $(document).ready(function() {
                         // Disabled "visualizar" as the route wasn't working
                         //output += '<td><a class="pull-right" style="margin-right: 2%;" href="curriculum.html?id=' + data.searchVector[j].curriculumId + '" class="btn btn-info" role="button">Visualizar</a></td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="' + data.searchVector[j].downloadCvLink + '" class="btn btn-info" role="button">Descargar</a></td>';
-                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Score: ' + data.searchVector[j].curriculumScore*100 + '</a></td>';
+                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Score: ' + data.searchVector[j].curriculumScore * 100 + '</a></td>';
                         output += '</tr>'
                     }
 
@@ -371,6 +371,16 @@ $(document).ready(function() {
 
                     elementos.respuestaBusqueda.append(output);
                     elementos.panelBusquedas.show();
+
+                    $.ajax({
+                        type: "POST",
+                        url: 'gestionUsuarios.php',
+                        data: {
+                            function: 'true',
+                        },
+                        success: function(data) {
+                        }
+                    });
 
                 } else {
                     output += "Error en la conexión con el servidor de búsquedas. Intentalo de nuevo mas tarde.";

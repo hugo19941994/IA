@@ -17,6 +17,8 @@
 	<link rel="stylesheet" href="css/animate.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
+	<link rel="icon" href="favicon.ico">
+
 	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lt IE 9]>
@@ -56,6 +58,11 @@
 					$_SESSION["permisos"] = $permisos_db;
 				}
 			}
+
+			$result_search = mysqli_query($db, "SELECT busquedas FROM metricas");
+			while ($row = mysqli_fetch_array($result_search)) {
+				$numeroCv = $row['busquedas'];
+			}
   }
 ?>
 
@@ -94,18 +101,18 @@
 							?>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
-              <br><br>
+							<br><br>
 							<?php } ?>
-              <li><a href="ayuda.html"><div>Ayuda</div></a></li>
-              <li><a href="contacto.html"><div>Contacto</div></a></li>
+							<li><a href="ayuda.php"><div>Ayuda</div></a></li>
+							<li><a href="contacto.php"><div>Contacto</div></a></li>
 						</ul>
 
 					</nav><!-- #primary-menu end -->
 
 					<div class="clearfix visible-md visible-lg">
-						<a href="#" class="social-icon si-small si-borderless si-github">
+						<a href="https://github.com/hugo19941994/CV-Parser" class="social-icon si-small si-borderless si-github">
 							<i class="icon-github"></i>
-              <i class="icon-github"></i>
+							<i class="icon-github"></i>
 						</a>
 					</div>
 
@@ -143,7 +150,7 @@
               </div>
 
               <div class="col_half col_last bottommargin-sm">
-                <div class="counter counter-small"><span data-from="100" data-to="18465" data-refresh-interval="50" data-speed="2000" data-comma="true"></span></div>
+                <div class="counter counter-small"><span data-from="1" data-to="<?php echo $numeroCv; ?>" data-refresh-interval="50" data-speed="2000" data-comma="true"></span></div>
                 <h5 class="nobottommargin">Búsquedas realizadas</h5>
               </div>
             </div>

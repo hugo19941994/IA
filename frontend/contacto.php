@@ -16,6 +16,8 @@
 	<link rel="stylesheet" href="css/animate.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
+	<link rel="icon" href="favicon.ico">
+
 	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lt IE 9]>
@@ -27,6 +29,30 @@
 	<title>Everis - Gestor de curriculums</title>
 
 </head>
+
+<?php
+  require 'functions.php';
+	session_start();
+  $lang = "es";
+	$allowed = false;
+  if(isset($_SESSION["usuario"]) && isset($_SESSION["password"]))
+  {
+      $usuario = $_SESSION["usuario"];
+      $password = $_SESSION["password"];
+			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+
+			$query = "SELECT * FROM usuarios";
+			$result = mysqli_query($db, $query);
+			while ($row = mysqli_fetch_array($result)) {
+				if (($usuario == $row['nombre']) && ($password ==  $row['password'])){
+					$allowed = true;
+					$nombre_db = $row['nombre'];
+					$password_db = $row['password'];
+					$permisos_db = $row['permisos'];
+				}
+			}
+  }
+?>
 
 <body class="stretched side-header">
 
@@ -54,7 +80,7 @@
 					============================================= -->
 					<nav id="primary-menu">
 						<ul>
-							<li class="current"><a href="index.php"><div>Índice</div></a></li>
+							<li><a href="index.php"><div>Índice</div></a></li>
 							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
 							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
 
@@ -63,18 +89,18 @@
 							?>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
-              <br><br>
+							<br><br>
 							<?php } ?>
-              <li><a href="ayuda.html"><div>Ayuda</div></a></li>
-              <li><a href="contacto.html"><div>Contacto</div></a></li>
+							<li><a href="ayuda.php"><div>Ayuda</div></a></li>
+							<li class="current"><a href="contacto.php"><div>Contacto</div></a></li>
 						</ul>
 
 					</nav><!-- #primary-menu end -->
 
 					<div class="clearfix visible-md visible-lg">
-						<a href="#" class="social-icon si-small si-borderless si-github">
+						<a href="https://github.com/hugo19941994/CV-Parser" class="social-icon si-small si-borderless si-github">
 							<i class="icon-github"></i>
-              <i class="icon-github"></i>
+							<i class="icon-github"></i>
 						</a>
 					</div>
 
@@ -82,7 +108,7 @@
 
 			</div>
 
-		</header><!-- #header end -->
+		</header>
 
 		<!-- Content
 		============================================= -->
@@ -100,11 +126,11 @@
 					<div class="col_full">
 						<h3>Desarolladores</h3>
                         <ul>
-                            <li>Jorge de Castro - burbujati@gmail.com</li>
-                            <li>Hugo Ferrando Seage - hugoseage@gmail.com</li>
-                            <li>Santiago Gualda Torrijos - sgualdat@gmail.com</li>
-                            <li>Jorge Garrote García - jorgegarroteuem@gmail.com</li>
-                            <li>Cristian López - clopezdist@gmail.com</li>
+                            <li><a href="https://es.linkedin.com/in/jdecastroc">Jorge de Castro</a> - <a href="mailto:jdecastroc@gmail.com?Subject=CV-Parser%20feedback" target="_top">jdecastroc@gmail.com</a></li>
+                            <li><a href="https://es.linkedin.com/in/hugo-ferrando-seage-194a94b8">Hugo Ferrando Seage</a> - <a href="mailto:hugoseage@gmail.com?Subject=CV-Parser%20feedback" target="_top">hugoseage@gmail.com</a></li>
+                            <li><a href="https://es.linkedin.com/in/santiago-gualda-torrijos-b5225363/en">Santiago Gualda Torrijos</a> - <a href="mailto:sgualdat@gmail.com?Subject=CV-Parser%20feedback" target="_top">sgualdat@gmail.com</a></li>
+                            <li><a href="https://es.linkedin.com/in/jorge-garrote-garc%C3%ADa-609b20b7/en">Jorge Garrote García</a> - <a href="mailto:jorgegarroteuem@gmail.com?Subject=CV-Parser%20feedback" target="_top">jorgegarroteuem@gmail.com</a></li>
+                            <li><a href="https://es.linkedin.com/in/cristian-l%C3%B3pez-ramos-rivera-9158b287/en">Cristian López</a> - <a href="mailto:clopezdist@gmail.com?Subject=CV-Parser%20feedback" target="_top">clopezdist@gmail.com</a></li>
                         </ul>
 					</div>
 					<div class="col_full">

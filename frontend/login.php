@@ -15,6 +15,8 @@
 	<link rel="stylesheet" href="css/animate.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
+	<link rel="icon" href="favicon.ico">
+
 	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lt IE 9]>

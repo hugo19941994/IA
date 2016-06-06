@@ -16,6 +16,8 @@
 	<link rel="stylesheet" href="css/animate.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
+	<link rel="icon" href="favicon.ico">
+
 	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lt IE 9]>
@@ -28,6 +30,30 @@
 
 </head>
 
+<?php
+  require 'functions.php';
+	session_start();
+  $lang = "es";
+	$allowed = false;
+  if(isset($_SESSION["usuario"]) && isset($_SESSION["password"]))
+  {
+      $usuario = $_SESSION["usuario"];
+      $password = $_SESSION["password"];
+			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+
+			$query = "SELECT * FROM usuarios";
+			$result = mysqli_query($db, $query);
+			while ($row = mysqli_fetch_array($result)) {
+				if (($usuario == $row['nombre']) && ($password ==  $row['password'])){
+					$allowed = true;
+					$nombre_db = $row['nombre'];
+					$password_db = $row['password'];
+					$permisos_db = $row['permisos'];
+				}
+			}
+  }
+?>
+
 <body class="stretched side-header">
 
 	<!-- Document Wrapper
@@ -37,7 +63,6 @@
 		<!-- Header
 		============================================= -->
 		<header id="header" class="no-sticky">
-
 			<div id="header-wrap">
 
 				<div class="container clearfix">
@@ -54,7 +79,7 @@
 					============================================= -->
 					<nav id="primary-menu">
 						<ul>
-							<li class="current"><a href="index.php"><div>Índice</div></a></li>
+							<li><a href="index.php"><div>Índice</div></a></li>
 							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
 							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
 
@@ -63,18 +88,18 @@
 							?>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
-              <br><br>
+							<br><br>
 							<?php } ?>
-              <li><a href="ayuda.html"><div>Ayuda</div></a></li>
-              <li><a href="contacto.html"><div>Contacto</div></a></li>
+							<li class="current"><a href="ayuda.php"><div>Ayuda</div></a></li>
+							<li><a href="contacto.php"><div>Contacto</div></a></li>
 						</ul>
 
 					</nav><!-- #primary-menu end -->
 
 					<div class="clearfix visible-md visible-lg">
-						<a href="#" class="social-icon si-small si-borderless si-github">
+						<a href="https://github.com/hugo19941994/CV-Parser" class="social-icon si-small si-borderless si-github">
 							<i class="icon-github"></i>
-              <i class="icon-github"></i>
+							<i class="icon-github"></i>
 						</a>
 					</div>
 
@@ -82,7 +107,9 @@
 
 			</div>
 
-		</header><!-- #header end -->
+		</header>
+			<!-- #header end -->
+
 
 		<!-- Content
 		============================================= -->

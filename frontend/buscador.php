@@ -15,6 +15,8 @@
   	<link rel="stylesheet" href="css/animate.min.css" type="text/css" />
   	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
+    <link rel="icon" href="favicon.ico">
+
     <link rel="stylesheet" href="css/responsive.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lt IE 9]>
@@ -28,6 +30,7 @@
 </head>
 
 <?php
+  require 'functions.php';
 	session_start();
   $lang = "es";
 	$allowed = false;
@@ -55,52 +58,51 @@
     <div id="wrapper" class="clearfix">
 
       <header id="header" class="no-sticky">
+  			<div id="header-wrap">
 
-        <div id="header-wrap">
+  				<div class="container clearfix">
 
-          <div class="container clearfix">
+  					<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
-            <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+  					<!-- Logo
+  					============================================= -->
+  					<div id="logo" class="nobottomborder">
+  						<a href="index.php" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
+  					</div><!-- #logo end -->
 
-            <!-- Logo
-            ============================================= -->
-            <div id="logo" class="nobottomborder">
-              <a href="index.php" class="standard-logo" data-dark-logo="img/logo-everis.png"><img src="img/logo-everis.png" alt="Everis logo"></a>
-            </div><!-- #logo end -->
+  					<!-- Primary Navigation
+  					============================================= -->
+  					<nav id="primary-menu">
+  						<ul>
+  							<li><a href="index.php"><div>Índice</div></a></li>
+  							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
+  							<li class="current"><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
 
-            <!-- Primary Navigation
-            ============================================= -->
-            <nav id="primary-menu">
-              <ul>
-                <li><a href="index.php"><div>Índice</div></a></li>
-                <li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
-                <li class="current"><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
+  							<?php
+  								if ($allowed && $permisos_db == "administrador") {
+  							?>
+  							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
+  							</li>
+  							<br><br>
+  							<?php } ?>
+  							<li><a href="ayuda.php"><div>Ayuda</div></a></li>
+  							<li><a href="contacto.php"><div>Contacto</div></a></li>
+  						</ul>
 
-                <?php
-                  if ($allowed && $permisos_db == "administrador") {
-                ?>
-                <li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
-                </li>
-                <br><br>
-                <?php } ?>
-                <li><a href="ayuda.html"><div>Ayuda</div></a></li>
-                <li><a href="contacto.html"><div>Contacto</div></a></li>
-              </ul>
+  					</nav><!-- #primary-menu end -->
 
-            </nav><!-- #primary-menu end -->
+  					<div class="clearfix visible-md visible-lg">
+  						<a href="https://github.com/hugo19941994/CV-Parser" class="social-icon si-small si-borderless si-github">
+  							<i class="icon-github"></i>
+  							<i class="icon-github"></i>
+  						</a>
+  					</div>
 
-            <div class="clearfix visible-md visible-lg">
-              <a href="#" class="social-icon si-small si-borderless si-github">
-                <i class="icon-github"></i>
-                <i class="icon-github"></i>
-              </a>
-            </div>
+  				</div>
 
-          </div>
+  			</div>
 
-        </div>
-
-      </header><!-- #header end -->
+  		</header>
         <!-- #header end -->
 
         <!-- Content
