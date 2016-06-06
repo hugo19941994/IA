@@ -406,7 +406,7 @@ public class MainController {
         return null;
 	}
 
-	@RequestMapping(value = "/borrar/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/borrar/{id}", method = RequestMethod.POST)
 	public @ResponseBody String deleteEntry(HttpServletResponse response, @PathVariable("id") String id)
 			throws IOException {
 

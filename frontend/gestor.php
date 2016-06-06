@@ -165,7 +165,7 @@
                                     <div class="input-group image-preview">
                                         <input id="idCvBorrar"type="text" class="form-control image-preview-filename">
                                         <span class="input-group-btn">
-                              <button id="borrarCV" class="btn btn-default image-preview-input" type="button" data-toggle="modal" data-target="#myModal">Borrar</button>
+                              <button id="borrarCv" class="btn btn-default image-preview-input" type="button" data-toggle="modal" data-target="#myModal">Borrar</button>
 
                               <div id="myModal" class="modal fade in">
                                   <div class="modal-dialog">

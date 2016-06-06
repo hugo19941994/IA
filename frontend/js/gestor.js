@@ -1,22 +1,19 @@
 $(document).ready(function() {
 
-  var elementos = {
-      idCvBorrar: $('#idCvBorrar').val();
-  };
-
   $(document).on('click', '#borrarCv', function() {
+    idCvBorrar = $('#idCvBorrar').val()
     $.ajax({
-        type: 'DELETE',
+        type: 'POST',
         url: 'http://hugofs.com:8080/borrar/' + idCvBorrar,
-        data: {
-        }, //Especifica los datos que se enviarán al servidor
+        //data: {}, //Especifica los datos que se enviarán al servidor
         async: true, //Cuidado con el true! esto es asíncrono puede generar problemas con otros fragmentos de código. Hace que el código se ejecute de manera concurrente
         beforeSend: function(xhr) {
             if (xhr && xhr.overrideMimeType) {
                 xhr.overrideMimeType('application/json;charset=utf-8');
             }
         },
-        dataType: 'json',
+        dataType: 'text',
+    	contentType: "text/plain; charset=utf-8",
         success: function(data, status) {
 
             //Do stuff with the JSON data
@@ -33,8 +30,6 @@ $(document).ready(function() {
             output += '<i class="icon-remove-sign"></i><strong>Ha habido al intentar conectar con el servidor de datos. Error: ' + status;
             output += '</div>';
             output += "</ul>";
-            elementos.respuestaBusqueda.append(output);
-            elementos.panelBusquedas.show();
         }
 
     });
