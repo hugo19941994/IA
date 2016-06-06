@@ -83,16 +83,18 @@
 							<li><a href="index.php"><div>Índice</div></a></li>
 							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
 							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
-
-							<?php
-								if ($allowed && $permisos_db == "administrador") {
-							?>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
+<<<<<<< HEAD:frontend/contacto.php
 							<br><br>
 							<?php } ?>
 							<li><a href="ayuda.php"><div>Ayuda</div></a></li>
 							<li class="current"><a href="contacto.php"><div>Contacto</div></a></li>
+=======
+                            <br><br>
+                            <li><a href="ayuda.html"><div>Ayuda</div></a></li>
+                            <li class="current"><a href="contacto.html"><div>Contacto</div></a></li>
+>>>>>>> 7f6cf66846894cff5b684965f5c3e5b399ae0369:frontend/contacto.html
 						</ul>
 
 					</nav><!-- #primary-menu end -->
@@ -119,7 +121,7 @@
 
 				<div class="promo promo-full promo-border header-stick bottommargin-lg">
 					<div class="container clearfix">
-						<h3>Contacto</h3>
+						<h2>Contacto</h2>
 					</div>
 				</div>
 				<div class="container clearfix">
@@ -137,7 +139,7 @@
 						<div>
 							<h3>Código Fuente</h3>
                             <a href="https://github.com/hugo19941994/CV-Parser">Github</a>
-  						</ul>
+                        </ul>
 						</div>
 					</div>
 				</div>
