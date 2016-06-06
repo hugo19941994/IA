@@ -83,8 +83,8 @@
                 </li>
                 <br><br>
                 <?php } ?>
-                <li><a href="index.html"><div>Ayuda</div></a></li>
-                <li><a href="index.html"><div>Contacto</div></a></li>
+                <li><a href="ayuda.html"><div>Ayuda</div></a></li>
+                <li><a href="contacto.html"><div>Contacto</div></a></li>
               </ul>
 
             </nav><!-- #primary-menu end -->

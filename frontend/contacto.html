@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
@@ -28,36 +27,6 @@
 	<title>Everis - Gestor de curriculums</title>
 
 </head>
-
-<?php
-	session_start();
-  $lang = "es";
-	$allowed = false;
-	if (isset($_POST['usuario']) && isset($_POST['password'])){
-		$usuario = $_POST['usuario'];
-		$password = $_POST['password'];
-		$_SESSION["usuario"] = $usuario;
-		$_SESSION["password"] = $password;
-	}
-  if(isset($_SESSION["usuario"]) && isset($_SESSION["password"]))
-  {
-			$usuario = $_SESSION["usuario"];
-			$password = $_SESSION["password"];
-			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
-
-			$query = "SELECT * FROM usuarios";
-			$result = mysqli_query($db, $query);
-			while ($row = mysqli_fetch_array($result)) {
-				if (($usuario == $row['nombre']) && ($password ==  $row['password'])){
-					$allowed = true;
-					$nombre_db = $row['nombre'];
-					$password_db = $row['password'];
-					$permisos_db = $row['permisos'];
-					$_SESSION["permisos"] = $permisos_db;
-				}
-			}
-  }
-?>
 
 <body class="stretched side-header">
 
@@ -124,60 +93,28 @@
 
 				<div class="promo promo-full promo-border header-stick bottommargin-lg">
 					<div class="container clearfix">
-						<h3>Bienvenido al gestor de curriculums de Everis</h3>
-						<span>Gestione los curriculums y ejecute búsquedas sobre los mismos para encontrar el personal adecuado para el puesto que necesita cubrir.</span>
+						<h3>Contacto</h3>
 					</div>
 				</div>
-
-
-
 				<div class="container clearfix">
-					<?php
-						if ($allowed) {
-					?>
-          <div class="widget clearfix">
-            <div class="row">
-              <div class="col_half bottommargin-sm">
-                <div class="counter counter-small"><span data-from="1" data-to="20" data-refresh-interval="80" data-speed="2000" data-comma="true"></span></div>
-                <h5 class="nobottommargin">Curriculums en el repositorio</h5>
-              </div>
-
-              <div class="col_half col_last bottommargin-sm">
-                <div class="counter counter-small"><span data-from="100" data-to="18465" data-refresh-interval="50" data-speed="2000" data-comma="true"></span></div>
-                <h5 class="nobottommargin">Búsquedas realizadas</h5>
-              </div>
-            </div>
-
-          </div>
-
+					<div class="col_full">
+						<h3>Desarolladores</h3>
+                        <ul>
+                            <li>Jorge de Castro - burbujati@gmail.com</li>
+                            <li>Hugo Ferrando Seage - hugoseage@gmail.com</li>
+                            <li>Santiago Gualda Torrijos - sgualdat@gmail.com</li>
+                            <li>Jorge Garrote García - jorgegarroteuem@gmail.com</li>
+                            <li>Cristian López - clopezdist@gmail.com</li>
+                        </ul>
+					</div>
 					<div class="col_full">
 						<div>
-							<h3>Noticias</h3>
-              <h4>Gestión de curriculums versión 0.1</h4>
-							<p>Liberada la última versión del gesto de curriculums de everis. A partir de ahora será posible filtrar las búsquedas para obtener resultados más precisos basados en las siguientes categorías: </p>
-              <ul>
-  							<li>Skill (herramientas o conocimientos de la persona).</li>
-  							<li>Empresas (empresas en las que ha trabajado o realizado prácticas).</li>
-  							<li>Experiencia (años de antigüedad en el mundo laboral).</li>
-  							<li>Idiomas</li>
+							<h3>Código Fuente</h3>
+                            <a href="https://github.com/hugo19941994/CV-Parser">Github</a>
   						</ul>
 						</div>
 					</div>
-					<?php
-				} else {
-					?>
-					<div class="col_full">
-						<div>
-							<h3>Usuario incorrecto</h3>
-							<p>Usted no tiene acceso para ver esta página. Vuelva a la pantalla de acceso para entrar con el usuario proporcionado por el administrador del sistema.</p>
-						</div>
-					</div>
-					<?php
-					}
-					?>
 				</div>
-
-
 			</div>
 
 		</section><!-- #content end -->
