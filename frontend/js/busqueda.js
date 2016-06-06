@@ -360,7 +360,8 @@ $(document).ready(function() {
 
                         output += '<tr>'
                         output += '<td>' + data.searchVector[j].curriculumId + '</td>';
-                        output += '<td><a class="pull-right" style="margin-right: 2%;" href="curriculum.html?id=' + data.searchVector[j].curriculumId + '" class="btn btn-info" role="button">Visualizar</a></td>';
+                        // Disabled "visualizar" as the route wasn't working
+                        //output += '<td><a class="pull-right" style="margin-right: 2%;" href="curriculum.html?id=' + data.searchVector[j].curriculumId + '" class="btn btn-info" role="button">Visualizar</a></td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="' + data.searchVector[j].downloadCvLink + '" class="btn btn-info" role="button">Descargar</a></td>';
                         output += '<td><a class="pull-right" style="margin-right: 2%;" href="#" class="btn btn-danger" role="button">Score: ' + data.searchVector[j].curriculumScore*100 + '</a></td>';
                         output += '</tr>'
