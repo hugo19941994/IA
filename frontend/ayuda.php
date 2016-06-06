@@ -85,7 +85,7 @@
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
 							<br><br>
-							<?php } ?>
+							<?php ?>
 							<li class="current"><a href="ayuda.php"><div>Ayuda</div></a></li>
 							<li><a href="contacto.php"><div>Contacto</div></a></li>
               <br><br>
