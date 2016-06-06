@@ -85,16 +85,13 @@
 							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
-<<<<<<< HEAD:frontend/contacto.php
 							<br><br>
 							<?php } ?>
 							<li><a href="ayuda.php"><div>Ayuda</div></a></li>
 							<li class="current"><a href="contacto.php"><div>Contacto</div></a></li>
-=======
-                            <br><br>
-                            <li><a href="ayuda.html"><div>Ayuda</div></a></li>
-                            <li class="current"><a href="contacto.html"><div>Contacto</div></a></li>
->>>>>>> 7f6cf66846894cff5b684965f5c3e5b399ae0369:frontend/contacto.html
+              <br><br>
+              <li><a href="ayuda.php"><div>Ayuda</div></a></li>
+              <li class="current"><a href="contacto.php"><div>Contacto</div></a></li>
 						</ul>
 
 					</nav><!-- #primary-menu end -->
