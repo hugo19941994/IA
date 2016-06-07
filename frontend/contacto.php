@@ -83,10 +83,13 @@
 							<li><a href="index.php"><div>Índice</div></a></li>
 							<li><a href="gestor.php"><div>Gestión de repositorio</div></a></li>
 							<li><a href="buscador.php"><div>Búsqueda de CV</div></a></li>
+							<?php
+								if ($allowed && $permisos_db == "administrador") {
+							?>
 							<li><a href="usuarios.php"><div>Gestión de usuarios</div></a> <!-- Solo para administradores-->
 							</li>
 							<br><br>
-							<?php ?>
+							<?php } ?>
 							<li><a href="ayuda.php"><div>Ayuda</div></a></li>
 							<li class="current"><a href="contacto.php"><div>Contacto</div></a></li>
               <br><br>
