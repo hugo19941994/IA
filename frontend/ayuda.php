@@ -91,9 +91,6 @@
               <?php } ?>
 							<li class="current"><a href="ayuda.php"><div>Ayuda</div></a></li>
 							<li><a href="contacto.php"><div>Contacto</div></a></li>
-              <br><br>
-              <li class="current"><a href="ayuda.php"><div>Ayuda</div></a></li>
-              <li><a href="contacto.php"><div>Contacto</div></a></li>
 						</ul>
 
 					</nav><!-- #primary-menu end -->
