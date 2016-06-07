@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/animate.min.css" type="text/css" />
     <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css" />
     <link rel="icon" href="favicon.ico">
 
     <link rel="stylesheet" href="css/responsive.css" type="text/css" />
@@ -55,11 +56,11 @@
     <div id="wrapper" class="clearfix">
       <header id="header" class="no-sticky">
 
-  			<div id="header-wrap">
+        <div id="header-wrap">
 
-  				<div class="container clearfix">
+            <div class="container clearfix">
 
-  					<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+                <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
   					<!-- Logo
   					============================================= -->
@@ -133,8 +134,16 @@
                                 <form class="form-horizontal">
                                     <fieldset>
                                         <div class="input-group image-preview">
-                                            <input type="file" id="file" name="document" class="findDocumentOnboarding" multiple/>
-                                            <input type="button" id="upload-button" class="uploadDocumentOnboarding" value="Subir"/>
+                                            <label class="btn btn-default btn-file">
+                                                Elegir Archivo
+                                                <input type="file" id="file" name="document" class="findDocumentOnboarding" style="display:none;"multiple/>
+                                            </label>
+                                            <label class="btn btn-default">
+                                                Subir
+                                                <input type="button" id="upload-button" class="uploadDocumentOnboarding" value="Subir" style="display:none"/>
+                                            </label>
+<i id="uploadIndicator" class="fa fa-2x fa-spin fa-spinner" aria-hidden="true" style="visibility:hidden;"></i>
+
                                             <!-- don't give a name === doesn't send on POST/GET -->
                                             <!--<span class="input-group-btn">-->
                               <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
