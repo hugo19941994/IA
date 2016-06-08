@@ -2,7 +2,7 @@
 class Database
 {
     private static $dbName = 'everis_cv' ;
-    private static $dbHost = 'hugofs.com' ;
+    private static $dbHost = 'localhost' ; //Changed for localhost requests
     private static $dbUsername = 'root';
     private static $dbUserPassword = 'universal';
 

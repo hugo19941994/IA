@@ -2,6 +2,9 @@ $(document).ready(function() {
 
   $(document).on('click', '#borrarCv', function() {
     idCvBorrar = $('#idCvBorrar').val()
+
+    $('#cargando').show()
+
     $.ajax({
         type: 'POST',
         url: 'http://hugofs.com:8080/borrar/' + idCvBorrar,
@@ -22,6 +25,8 @@ $(document).ready(function() {
                 output += "<div id='toast-container' class='toast-top-right' aria-live='polite' role='alert'><div class='toast toast-success' style=''><div class='toast-message'> <i id='iconC'class='icon-remove-sign';></i> Se ha eliminado el curriculum especificado correctamente.</div></div></div>";
                 $('#seccionExito').append(output);
 
+                $('#cargando').hide();
+
             }
         },
         error: function(status) {
@@ -30,6 +35,9 @@ $(document).ready(function() {
             output += '<i class="icon-remove-sign"></i><strong>Ha habido al intentar conectar con el servidor de datos. Error: ' + status;
             output += '</div>';
             output += "</ul>";
+
+            $('#cargando').hide();
+
         }
 
     });
