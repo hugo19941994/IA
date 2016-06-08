@@ -238,7 +238,7 @@
     </div>
     <!-- #wrapper end -->
     <div id="seccionExito"></div>
-    <div class="modal-body" id="cargando" style="background:url(../img/loading.gif) no-repeat center center;width:32px;height:32px;"></div>
+    <div class="modal-body" id="cargando" style="background:url(/img/loading.gif) no-repeat center center;width:32px;height:32px;"></div>
 
     <!-- JavaScripts externos
 	============================================= -->
