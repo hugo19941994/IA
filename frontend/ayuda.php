@@ -125,14 +125,12 @@
 				<div class="container clearfix">
 					<div class="col_full">
 						<div>
-							<h3>Documentación</h3>
-                            <a href="http://hugofs.com:8080/swagger-ui.html">Swagger</a>
-						</div>
-					</div>
-					<div class="col_full">
-						<div>
-							<h3>Instalación</h3>
-  						</ul>
+							<h3>Documentación y Ayuda</h3>
+                            <ul>
+                                <li><a href="http://hugofs.com:8080/swagger-ui.html">Swagger</a></li>
+                                <li><a href="https://github.com/hugo19941994/CV-Parser/raw/master/Documentacion%20Proyecto%20Integrador.pdf">Documentacion del proyecto</a></li>
+                                <li><a href="https://github.com/hugo19941994/CV-Parser/raw/master/Manual%20de%20usuario%20PBS.pdf">Manual de Usuario</a></li>
+                            </ul>
 						</div>
 					</div>
 				</div>
