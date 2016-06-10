@@ -53,7 +53,7 @@ do
         DATA=$(less ./cv/$COUNTER.json)
 
         # JSON to elastic
-        curl -XPUT 'http://hugofs.com:9200/concurrente/cv/'$COUNTER -d "$DATA" -vn
+        curl -XPUT 'http://localhost:9200/concurrente/cv/'$COUNTER -d "$DATA" -vn
 
         # Change filename to index
         mv "$file" ./cvReal/$COUNTER.$extension

@@ -14,7 +14,7 @@ if [ -z "$1" ]
 then
     exit
 else
-    curl -XDELETE "http://hugofs.com:9200/concurrente/cv/$1"
+    curl -XDELETE "http://localhost:9200/concurrente/cv/$1"
     rm ./cv/$1*
     rm ./cvReal/$1*
 fi
