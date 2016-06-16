@@ -196,8 +196,8 @@ public class MainController {
 
 			// Creamos el objeto search para almacenar la informacion de la
 			// busqueda
-			SearchObject searchObject = new SearchObject(idCv, idScore, "http://localhost:8080/descargas/" + idCv,
-					"http://localhost:8080/curriculums/" + idCv);
+			SearchObject searchObject = new SearchObject(idCv, idScore, "http://hugofs.com:8080/descargas/" + idCv,
+					"http://hugofs.com:8080/curriculums/" + idCv);
 
 			// Insertamos el objeto generado que encaja con la busqueda en la
 			// lista final
@@ -301,8 +301,8 @@ public class MainController {
 
 			// Creamos el objeto search para almacenar la informacion de la
 			// busqueda
-			SearchObject searchObject = new SearchObject(idCv, idScore, "http://localhost:8080/descargas/" + idCv,
-					"http://localhost:8080/curriculums/" + idCv);
+			SearchObject searchObject = new SearchObject(idCv, idScore, "http://hugofs.com:8080/descargas/" + idCv,
+					"http://hugofs.com:8080/curriculums/" + idCv);
 
 			// Insertamos el objeto generado que encaja con la busqueda en la
 			// lista final
