@@ -7,7 +7,7 @@
   {
       $usuario = $_SESSION["usuario"];
       $password = $_SESSION["password"];
-			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+			$db = mysqli_connect('mysql', $_ENV["DBUSR"], $_ENV["DBPWD"], 'everis_cv') or die('Error conectando al servidor de base de datos.');
 
 			$query = "SELECT * FROM usuarios";
 			$result = mysqli_query($db, $query);

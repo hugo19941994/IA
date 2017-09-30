@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="es">
 
@@ -7,18 +8,18 @@
 
     <!-- Stylesheets
 	============================================= -->
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="style.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/swiper.css" type="text/css" />
-    <link rel="stylesheet" href="css/dark.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/font-icons.css" type="text/css" />
-    <link rel="stylesheet" href="css/animate.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="style.min.css" type="text/css">
+    <link rel="stylesheet" href="css/swiper.css" type="text/css">
+    <link rel="stylesheet" href="css/dark.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
 
     <link rel="icon" href="favicon.ico">
 
-    <link rel="stylesheet" href="css/responsive.css" type="text/css" />
+    <link rel="stylesheet" href="css/responsive.css" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
@@ -29,7 +30,6 @@
 </head>
 
 <?php
-	session_start();
   require 'database.php';
   require 'functions.php';
   $lang = "es";
@@ -38,7 +38,7 @@
   {
       $usuario = $_SESSION["usuario"];
       $password = $_SESSION["password"];
-			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+			$db = mysqli_connect('mysql', $_ENV["DBUSR"], $_ENV["DBPWD"], 'everis_cv') or die('Error conectando al servidor de base de datos.');
 
 			$query = "SELECT * FROM usuarios";
 			$result = mysqli_query($db, $query);

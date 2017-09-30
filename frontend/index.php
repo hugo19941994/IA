@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
@@ -8,18 +8,18 @@
 
 	<!-- Stylesheets
 	============================================= -->
-	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-	<link rel="stylesheet" href="style.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/swiper.css" type="text/css" />
-	<link rel="stylesheet" href="css/dark.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/font-icons.css" type="text/css" />
-	<link rel="stylesheet" href="css/animate.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="style.min.css" type="text/css">
+	<link rel="stylesheet" href="css/swiper.css" type="text/css">
+	<link rel="stylesheet" href="css/dark.min.css" type="text/css">
+	<link rel="stylesheet" href="css/font-icons.css" type="text/css">
+	<link rel="stylesheet" href="css/animate.min.css" type="text/css">
+	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
 
 	<link rel="icon" href="favicon.ico">
 
-	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
+	<link rel="stylesheet" href="css/responsive.css" type="text/css">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
@@ -32,7 +32,6 @@
 </head>
 
 <?php
-	session_start();
   $lang = "es";
 	$allowed = false;
 	if (isset($_POST['usuario']) && isset($_POST['password'])){
@@ -45,7 +44,7 @@
   {
 			$usuario = $_SESSION["usuario"];
 			$password = $_SESSION["password"];
-			$db = mysqli_connect('hugofs.com','root','universal','everis_cv') or die('Error conectando al servidor de base de datos.');
+			$db = mysqli_connect('mysql', $_ENV["DBUSR"], $_ENV["DBPWD"], 'everis_cv') or die('Error conectando al servidor de base de datos.');
 
 			$query = "SELECT * FROM usuarios";
 			$result = mysqli_query($db, $query);
@@ -161,7 +160,7 @@
 						<div>
 							<h3>Noticias</h3>
               <h4>Gestión de curriculums versión 0.1</h4>
-							<p>Liberada la última versión del gesto de curriculums de everis. A partir de ahora será posible filtrar las búsquedas para obtener resultados más precisos basados en las siguientes categorías: </p>
+							<p>Liberada la última versión del gestor de CV de Everis. A partir de ahora será posible filtrar las búsquedas para obtener resultados más precisos basados en las siguientes categorías: </p>
               <ul>
   							<li>Skill (herramientas o conocimientos de la persona).</li>
   							<li>Empresas (empresas en las que ha trabajado o realizado prácticas).</li>

@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     $.ajax({
         type: 'POST',
-        url: 'http://hugofs.com:8080/borrar/' + idCvBorrar,
+        url: '/borrar/' + idCvBorrar,
         //data: {}, //Especifica los datos que se enviarán al servidor
         async: true, //Cuidado con el true! esto es asíncrono puede generar problemas con otros fragmentos de código. Hace que el código se ejecute de manera concurrente
         beforeSend: function(xhr) {

@@ -156,7 +156,7 @@ public class MainController {
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET",
-					"http://localhost:9200/concurrente/cv/_search", "-d", query.toString());
+					"http://elasticsearch:9200/concurrente/cv/_search", "-d", query.toString());
 
 			processBuilder.redirectErrorStream(true);
 			Process process = processBuilder.start();
@@ -180,6 +180,7 @@ public class MainController {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String prettyJson = gson.toJson(json);
 
+		System.out.println(prettyJson);
 		System.out.println("Consulta finalizada con exito");
 
 		// Json Parser to deserialize the object
@@ -196,8 +197,8 @@ public class MainController {
 
 			// Creamos el objeto search para almacenar la informacion de la
 			// busqueda
-			SearchObject searchObject = new SearchObject(idCv, idScore, "http://hugofs.com:8080/descargas/" + idCv,
-					"http://hugofs.com:8080/curriculums/" + idCv);
+			SearchObject searchObject = new SearchObject(idCv, idScore, System.getenv("URL") + "/descargas/" + idCv,
+					System.getenv("URL") + "/curriculums/" + idCv);
 
 			// Insertamos el objeto generado que encaja con la busqueda en la
 			// lista final
@@ -261,7 +262,7 @@ public class MainController {
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET",
-					"http://localhost:9200/concurrente/cv/_search", "-d", query);
+					"http://elasticsearch:9200/concurrente/cv/_search", "-d", query);
 
 			processBuilder.redirectErrorStream(true);
 			Process process = processBuilder.start();
@@ -301,8 +302,8 @@ public class MainController {
 
 			// Creamos el objeto search para almacenar la informacion de la
 			// busqueda
-			SearchObject searchObject = new SearchObject(idCv, idScore, "http://hugofs.com:8080/descargas/" + idCv,
-					"http://hugofs.com:8080/curriculums/" + idCv);
+			SearchObject searchObject = new SearchObject(idCv, idScore, System.getenv("URL") + "/descargas/" + idCv,
+					System.getenv("URL") + "/curriculums/" + idCv);
 
 			// Insertamos el objeto generado que encaja con la busqueda en la
 			// lista final
@@ -332,10 +333,10 @@ public class MainController {
 
 		StringBuilder processOutput = new StringBuilder();
 
-		String address = "http://localhost:9200/concurrente/cv/" + id;
+		String address = "http://elasticsearch:9200/concurrente/cv/" + id;
 
 		if (!id.equals("")) {
-			System.out.println("Consulta: http://localhost:9200/concurrente/cv/" + id);
+			System.out.println("Consulta: http://elasticsearch:9200/concurrente/cv/" + id);
 
 			// Se arma el proceso que se va a ejecutar en el servidor
 			ProcessBuilder processBuilder = new ProcessBuilder("curl", "-s", "-XGET", address.trim());

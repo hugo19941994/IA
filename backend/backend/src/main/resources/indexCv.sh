@@ -44,16 +44,16 @@ do
         extension="${filename##*.}"
 
         # Parse file
-        (cd ../../../../parser; python main.py ../backend/src/main/resources/upload/"${filename}") & wait
+        (cd /parser; python3 main.py /code/src/main/resources/upload/"${filename}") & wait
 
         # Move parsed JSON
-        mv /home/hfs/CV-Parser/parser/out/0.json "./cv/$COUNTER.json"
+        mv /parser/out/0.json "./cv/$COUNTER.json"
 
         # Get content of JSON
         DATA=$(less ./cv/$COUNTER.json)
 
         # JSON to elastic
-        curl -XPUT 'http://localhost:9200/concurrente/cv/'$COUNTER -d "$DATA" -vn
+        curl -XPUT 'http://elasticsearch:9200/concurrente/cv/'$COUNTER -d "$DATA" -vn
 
         # Change filename to index
         mv "$file" ./cvReal/$COUNTER.$extension

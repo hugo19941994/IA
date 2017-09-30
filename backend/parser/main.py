@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 UEM/Everis - Proyecto Integrador 2015-2016
 Inteligencia Artificial
@@ -9,19 +11,20 @@ Description: Parses CV files (in several formats)
              and outputs useful information in JSON
 '''
 
-import os
-import errno
-import sys
-import glob
-import json
-import pickle
-import subprocess
-import textwrap
-import requests
-import nltk
 from download_tika import comprobar_apache_tika
 from regex_rules import REGEX_RULES, REGEX_EMAIL
-
+import errno
+import glob
+import glob
+import json
+import nltk
+import os
+import pickle
+import pickle
+import requests
+import subprocess
+import sys
+import textwrap
 
 def check_download():
     '''Cheks if Tika and NLTK are installed.
@@ -29,7 +32,7 @@ def check_download():
     Loads the spanish tokenizer and stemmer for later use'''
 
     print("Checking Apache Tika")
-    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.13.jar')
+    comprobar_apache_tika('http://ftp.cixug.es/apache/tika/tika-app-1.16.jar')
 
     print("Checking NLTK and punkt")
     nltk.download("punkt")
@@ -66,7 +69,7 @@ def convert_to_plaintext(name):
 
     # Use Tika to change format to plain text
     raw_text = subprocess.check_output(["java", "-jar",
-                                        "tika-app-1.13.jar",
+                                        "tika-app-1.16.jar",
                                         "-t", name],
                                        universal_newlines=False).decode('utf-8')
 
@@ -154,7 +157,7 @@ def save_json(lists, alchemy_result, count):
                 'Libros': lists[4],
                 'Extras': lists[5],
                 'Emails': lists[6],
-                'NER': alchemy_result}
+                'NER': alchemy_result or []}
 
     os.makedirs("./out", exist_ok=True)  # Folder where results are saved
 
@@ -196,9 +199,9 @@ def main():
             search_sections(lists, par)
 
             print("Searching for Named Entities using Alchemy")
-            alchemy_result = ner(stemmed_text)
+            #alchemy_result = ner(stemmed_text)
 
-            save_json(lists, alchemy_result, count)
+            save_json(lists, None, count)
 
         except IOError as exc:
             # No fallar si otro directorio es encontrado, simplemente ignorarlo

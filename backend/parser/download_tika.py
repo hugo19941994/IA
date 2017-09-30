@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''Downloads Apache Tika for file conversion'''
 import urllib.request as urllib2
 import hashlib
@@ -70,7 +72,7 @@ def comprobar_apache_tika(url):
     if os.path.exists(filename):
         # Comprobar Tika con su SHA1
         with open(filename, 'rb') as file:
-            if hashlib.sha1(file.read()).hexdigest() == "e0649edcc26563f59f7fc37f223d83f4988d5566":
+            if hashlib.sha1(file.read()).hexdigest() == "cd0e68e795c513f317cf70759129f16bbd04822a":
                 print("SHA1 correcto")
             else:
                 print("SHA1 incorrecto\nBorra el archivo y prueba otra vez")

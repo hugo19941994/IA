@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''Regex rules used by the main program to find sections of a CV'''
 import re
 

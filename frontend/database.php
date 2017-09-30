@@ -3,8 +3,6 @@ class Database
 {
     private static $dbName = 'everis_cv' ;
     private static $dbHost = 'localhost' ; //Changed for localhost requests
-    private static $dbUsername = 'root';
-    private static $dbUserPassword = 'universal';
 
     private static $cont  = null;
 
@@ -19,7 +17,7 @@ class Database
        {
         try
         {
-          self::$cont =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, self::$dbUsername, self::$dbUserPassword);
+          self::$cont =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, $_ENV["DBUSR"], $_ENV["DBPWD"]);
         }
         catch(PDOException $e)
         {
