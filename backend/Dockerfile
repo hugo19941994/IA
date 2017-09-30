@@ -22,4 +22,4 @@ ADD backend/src /code/src
 RUN mvn package
 
 EXPOSE 8080
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/proyectoCurriculums-0.0.1-SNAPSHOT.jar"]
+CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/cv-parser-1.0.0.jar"]
