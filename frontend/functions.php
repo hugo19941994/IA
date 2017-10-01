@@ -1,37 +1,34 @@
 <?php
-    require_once 'database.php';
+require_once 'database.php';
 
-    function crearUsuario($nombre, $password, $permisos)
-    {
-      if (Database::isUser($nombre))
-      {
+function crearUsuario($nombre, $password, $permisos)
+{
+    if (Database::isUser($nombre)) {
         Database::insertData($nombre, $password, $permisos);
         return true;
-      } else {
+    } else {
         return false;
-      }
     }
+}
 
-    function borrarUsuario($nombre)
-    {
-      if (Database::isUser($nombre)){
+function borrarUsuario($nombre)
+{
+    if (Database::isUser($nombre)) {
         Database::removeData($nombre);
         return true;
-      }
-      else
-      {
+    } else {
         return false;
-      }
     }
+}
 
-    function increaseSearch()
-    {
-      Database::increaseSearchDb();
-    }
+function increaseSearch()
+{
+    Database::increaseSearchDb();
+}
 
-    function checkCv()
-    {
-      $files = scandir('');
-    }
+function checkCv()
+{
+    $files = scandir('');
+}
 
 ?>

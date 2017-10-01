@@ -3,10 +3,10 @@ $(document).on('click', '#close-preview', function(){
     // Hover befor close the preview
     $('.image-preview').hover(
         function () {
-           $('.image-preview').popover('show');
+            $('.image-preview').popover('show');
         },
-         function () {
-           $('.image-preview').popover('hide');
+        function () {
+            $('.image-preview').popover('hide');
         }
     );
 });

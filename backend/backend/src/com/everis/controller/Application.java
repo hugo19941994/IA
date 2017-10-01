@@ -1,6 +1,6 @@
 /**
  * RESTFul service
- * 
+ *
  * @author: Jorge de Castro
  * @version: 17/03/2016/A
  * @see <a href = "https://github.com/hugo19941994/CV-Parser" /> Github
@@ -17,9 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class Application {
-
-	public static void main(String[] args) {
-
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }
