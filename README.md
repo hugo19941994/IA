@@ -1,6 +1,5 @@
 # CV Parser
 
-[![license](https://img.shields.io/github/license/hugo19941994/cv-parser.svg)](https://github.com/hugo19941994/cv-parser/blob/master/LICENSE.md)
 [![Requirements Status](https://requires.io/github/hugo19941994/cv-parser/requirements.svg?branch=master)](https://requires.io/github/hugo19941994/cv-parser/requirements/?branch=master)
 
 ## Deployment
