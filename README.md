@@ -1,6 +1,8 @@
 # CV Parser
 
-[![Requirements Status](https://requires.io/github/hugo19941994/cv-parser/requirements.svg?branch=master)](https://requires.io/github/hugo19941994/cv-parser/requirements/?branch=master)
+| Python | Java |
+|--------|------|
+| [![Requirements Status](https://requires.io/github/hugo19941994/cv-parser/requirements.svg?branch=master)](https://requires.io/github/hugo19941994/cv-parser/requirements/?branch=master) | [![Dependency Status](https://beta.gemnasium.com/badges/github.com/hugo19941994/cv-parser.svg)](https://beta.gemnasium.com/projects/github.com/hugo19941994/cv-parser) |
 
 ## Deployment
 
