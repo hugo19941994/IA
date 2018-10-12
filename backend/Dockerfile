@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM openjdk:10.0.2
 
 # Install dependencies
 RUN apt-get update
