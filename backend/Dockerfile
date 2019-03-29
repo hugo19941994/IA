@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM openjdk:12
 
 # Install dependencies
 RUN apt-get update
